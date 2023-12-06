@@ -22,7 +22,7 @@ export default async function VaultLayout({ children, params }: {
       </div>
       <div className="pt-12">
         <VaultTitle>
-          {vault.name}
+          {vault.title}
         </VaultTitle>
       </div>
       <div className='mt-5'>
