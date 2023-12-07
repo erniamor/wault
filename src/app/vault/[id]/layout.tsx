@@ -1,4 +1,4 @@
-import { fetchVault } from '@/logic/data';
+import { fetchVaultById } from '@/logic/data';
 import { notFound } from 'next/navigation';
 import VaultMenu from '@/components/VaultMenu';
 import VaultTitle from '@/components/VaultTitle';
@@ -9,7 +9,7 @@ export default async function VaultLayout({ children, params }: {
 }) {
 
   const id = params.id;
-  const vault = await fetchVault(id);
+  const vault = await fetchVaultById(id);
   if (!vault) {
     notFound();
   }

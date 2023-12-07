@@ -3,7 +3,7 @@ const USERS = [
   {
     id: '410544b2-4001-4271-9855-fec4b6a6442a',
     name: 'User',
-    email: 'user@domain.com',
+    email: 'user@a-domain.com',
     password: '123456',
   },
 ];
@@ -12,6 +12,7 @@ const VAULTS = [
   {
     id: '3958dc9e-712f-4377-85e9-fec4b6a6442a',
     title: 'Dev',
+    description: 'All for code.',
     user_id: USERS[0].id,
   },
   {
@@ -37,7 +38,7 @@ const ELEMENTS = [
   {
     url: 'https://github.com/',
     title: 'Github',
-    description: 'The world’s leading AI-powered developer platform.',
+    description: 'The developer platform.',
     vault_id: VAULTS[0].id,
     user_id: USERS[0].id,
   },

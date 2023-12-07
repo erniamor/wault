@@ -1,13 +1,13 @@
 import VaultCard from '@/components/VaultCard';
 import { Metadata } from 'next';
-import { fetchVaults } from '@/logic/data';
+import { fetchRootVaults } from '@/logic/data';
 
 export const metadata: Metadata = {
   title: 'Vaults',
 };
 
 export default async function Page() {
-  const vaults = await fetchVaults();
+  const vaults = await fetchRootVaults();
 
   return (
     <main className="w-full">

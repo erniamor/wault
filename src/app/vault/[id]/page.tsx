@@ -1,4 +1,4 @@
-import { fetchVaultVaults, fetchVaultElements } from '@/logic/data';
+import { fetchVaultsByVaultId, fetchElementsByVaultId } from '@/logic/data';
 import { Metadata } from 'next';
 import VaultCard from '@/components/VaultCard';
 import ElementCard from '@/components/ElementCard';
@@ -9,8 +9,8 @@ export const metadata: Metadata = {
 
 export default async function Page({ params }: { params: { id: string } }) {
   const id = params.id;
-  const vaults = await fetchVaultVaults(id);
-  const elements = await fetchVaultElements(id);
+  const vaults = await fetchVaultsByVaultId(id);
+  const elements = await fetchElementsByVaultId(id);
   return (
 
     <div className="w-full flex flex-col gap-3">

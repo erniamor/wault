@@ -13,7 +13,7 @@ export default function VaultInfo({ vault }: { vault: Vault }) {
       <VaultMenuLink href={`/vault/${vault.id}`} activeColor='bg-green-600'>
         <CiMenuBurger />
       </VaultMenuLink>
-      <VaultMenuLink href={`/vault/${vault.id}/edit`} activeColor='bg-blue-600'>
+      <VaultMenuLink href={`/vault/${vault.id}/edit`} activeColor='bg-sky-600'>
         <CiEdit />
       </VaultMenuLink>
       <VaultMenuLink href={`/vault/${vault.id}/remove`} activeColor='bg-red-600'>
