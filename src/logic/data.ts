@@ -10,7 +10,7 @@ export async function fetchRootVaults() {
   noStore();
 
   try {
-    const vaults = await sql<Vault[]>`
+    const vaults = await sql<Vault>`
       SELECT * FROM vaults
       WHERE vault_id IS NULL
     `;
@@ -26,7 +26,7 @@ export async function fetchVaultById(id: string) {
   noStore();
 
   try {
-    const vaults = await sql<Vault[]>`
+    const vaults = await sql<Vault>`
       SELECT * FROM vaults
       WHERE id = ${id}
     `;
@@ -43,7 +43,7 @@ export async function fetchVaultsByVaultId(id: string) {
   noStore();
 
   try {
-    const vaults = await sql<Vault[]>`
+    const vaults = await sql<Vault>`
       SELECT * FROM vaults
       WHERE vault_id = ${id}
     `;
@@ -59,7 +59,7 @@ export async function fetchElementsByVaultId(id: string) {
   noStore();
 
   try {
-    const elements = await sql<Element[]>`
+    const elements = await sql<Element>`
       SELECT * FROM elements
       WHERE vault_id = ${id}
     `;
