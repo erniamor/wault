@@ -14,7 +14,7 @@ export default function Header() {
             height={40}
             alt="Wault logo"
           />
-          <h1 className={`${inter.className} text-2xl text-white`}>Vault</h1>
+          <h1 className={`${inter.className} text-2xl text-white`}>Wault</h1>
         </Link>
         <div className='flex flex-row gap-5 text-white'>
           <FaSearch size={30} />
