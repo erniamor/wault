@@ -9,7 +9,8 @@ export default function VaultCard({ vault }: { vault: Vault }) {
         <FaFolder />
       </div>
       <div>
-        {vault.title}
+        <div>{vault.title}</div>
+        <div className='text-sm text-gray-500 truncate'><span>{vault.description}</span></div>
       </div>
     </Link>
   )

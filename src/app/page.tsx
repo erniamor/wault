@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import Button from '@/components/Button';
+import Lien from '@/components/Lien';
 
 export default function Home() {
   return (
@@ -19,16 +19,16 @@ export default function Home() {
         </div>
 
         <div className='flex flex-row gap-3 mt-20'>
-          <Button href="/login">
+          <Lien href="/login">
             Log in
-          </Button>
-          <Button href="/login">
+          </Lien>
+          <Lien href="/login">
             Sign in
-          </Button>
+          </Lien>
 
-          <Button href="/vault">
+          <Lien href="/vault">
             Vault
-          </Button>
+          </Lien>
         </div>
 
       </div>
