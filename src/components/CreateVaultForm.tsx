@@ -2,11 +2,11 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/Button';
-import { createVault } from '@/logic/actions';
+import { State, createVault } from '@/logic/actions';
 import { useFormState } from 'react-dom';
 
 export default function Form() {
-  const initialState = { message: null, errors: {} };
+  const initialState: State = { message: null, errors: {} };
   const [state, dispatch] = useFormState(createVault, initialState);
   return (
     <form action={dispatch}>
