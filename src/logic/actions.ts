@@ -5,6 +5,7 @@ import { sql } from '@vercel/postgres';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { USERS } from '../logic/placeholder';
+import { Vault } from './definitions';
 
 const VaultFormSchema = z.object({
   id: z.string(),
@@ -44,7 +45,6 @@ export async function createVault(prevState: State, formData: FormData) {
     description: formData.get('description'),
   });
 
-  console.log(validatedFields);
   // If form validation fails, return errors early. Otherwise, continue.
   if (!validatedFields.success) {
     return {
@@ -74,3 +74,61 @@ export async function createVault(prevState: State, formData: FormData) {
 }
 
 
+
+// Use Zod to update the expected types
+const UpdateVault = VaultFormSchema.omit({ id: true/* , date: true */ });
+
+export async function updateVault(vault: Vault, prevState: State, formData: FormData) {
+
+  // Validate form fields using Zod
+  const validatedFields = UpdateVault.safeParse({
+    // vaultId: formData.get('vaultId'),
+    title: formData.get('title'),
+    description: formData.get('description'),
+  });
+
+  // If form validation fails, return errors early. Otherwise, continue.
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Missing Fields. Failed to Update Vault.',
+    };
+  }
+
+  // Prepare data for insertion into the database
+  const { title, description } = validatedFields.data;
+  const userId = USERS[0].id;
+  // const date = new Date().toISOString().split('T')[0];
+
+  try {
+    await sql`
+      UPDATE vaults
+      SET title = ${title}, description = ${description}
+      WHERE id = ${vault.id}
+    `;
+  } catch (error) {
+    return {
+      message: 'Database Error: Failed to Update Vault.',
+    };
+  }
+
+  revalidatePath(`/vault/${vault.id}`);
+  revalidatePath(`/vault${vault.vault_id ? `/${vault.vault_id}` : ''}`);
+  redirect(`/vault/${vault.id}`);
+
+}
+
+export async function deleteVault(vault: Vault) {
+
+  // TODO: delete all vault children
+
+  try {
+    await sql`DELETE FROM vaults WHERE id = ${vault.id}`;
+  } catch (error) {
+    return { message: 'Database Error: Failed to Delete Vault.' };
+  }
+
+  revalidatePath(`/vault${vault.vault_id ? `/${vault.vault_id}` : ''}`);
+  redirect(`/vault${vault.vault_id ? `/${vault.vault_id}` : ''}`);
+
+}

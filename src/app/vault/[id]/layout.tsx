@@ -1,7 +1,7 @@
 import { fetchVaultById } from '@/logic/data';
 import { notFound } from 'next/navigation';
-import VaultMenu from '@/components/VaultMenu';
-import VaultTitle from '@/components/VaultTitle';
+import VaultMenu from '@/components/vault/VaultMenu';
+import VaultTitle from '@/components/vault/VaultTitle';
 
 export default async function VaultLayout({ children, params }: {
   children: React.ReactNode,
@@ -13,7 +13,6 @@ export default async function VaultLayout({ children, params }: {
   if (!vault) {
     notFound();
   }
-  const hrefBack = vault.vault_id ? `/vault/${vault.vault_id}` : `/vault`;
 
   return <main>
     <div className="w-full px-5">

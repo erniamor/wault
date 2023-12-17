@@ -1,4 +1,4 @@
-import VaultCard from '@/components/VaultCard';
+import VaultCard from '@/components/vault/VaultCard';
 import { Metadata } from 'next';
 import { fetchRootVaults } from '@/logic/data';
 import AddMenu from '@/components/AddMenu';

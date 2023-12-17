@@ -1,5 +1,5 @@
 import { Vault } from '@/logic/definitions';
-import VaultMenuLink from '@/components/VaultMenuLink';
+import VaultMenuLink from '@/components/vault/VaultMenuLink';
 import { CiTurnL1, CiMenuBurger, CiEdit, CiTrash } from "react-icons/ci";
 
 export default function VaultInfo({ vault }: { vault: Vault }) {

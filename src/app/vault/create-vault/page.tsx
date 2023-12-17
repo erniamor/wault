@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import CreateVaultForm from '@/components/CreateVaultForm';
+import CreateVaultForm from '@/components/vault/CreateVaultForm';
 export const metadata: Metadata = {
   title: 'Create Vault',
 };

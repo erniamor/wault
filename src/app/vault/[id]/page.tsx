@@ -1,6 +1,6 @@
 import { fetchVaultsByVaultId, fetchElementsByVaultId } from '@/logic/data';
 import { Metadata } from 'next';
-import VaultCard from '@/components/VaultCard';
+import VaultCard from '@/components/vault/VaultCard';
 import ElementCard from '@/components/ElementCard';
 
 export const metadata: Metadata = {

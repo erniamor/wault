@@ -1,16 +1,19 @@
+import { fetchVaultById } from '@/logic/data';
+import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
+import DeleteVaultForm from '@/components/vault/DeleteVaultForm';
 
 export const metadata: Metadata = {
-  title: 'Edit a Vault',
+  title: 'Remove a Vault',
 };
 
 export default async function Page({ params }: { params: { id: string } }) {
   const id = params.id;
+  const vault = await fetchVaultById(id);
+  if (!vault) {
+    notFound();
+  }
   return (
-
-    <div className="w-full flex flex-col gap-3">
-      Remove confirmation
-    </div>
-
+    <DeleteVaultForm vault={vault} />
   );
 }
