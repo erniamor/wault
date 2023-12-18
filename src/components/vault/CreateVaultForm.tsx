@@ -9,9 +9,14 @@ import FormError from '../form/FormError';
 import FormFields from '../form/FormFields';
 import FormButtons from '../form/FormButtons';
 
-export default function Form() {
+type FormProps = {
+  vaultId?: string;
+}
+
+export default function Form({ vaultId }: FormProps) {
   const initialState: State = { message: null, errors: {} };
-  const [state, dispatch] = useFormState(createVault, initialState);
+  const createVaultBinded = createVault.bind(null, vaultId || null);
+  const [state, dispatch] = useFormState(createVaultBinded, initialState);
   return (
     <form action={dispatch}>
       <FormFields>
@@ -20,7 +25,7 @@ export default function Form() {
         <FormError message={state.message} />
       </FormFields>
       <FormButtons>
-        <Button href={`/vault`}>Cancel</Button>
+        <Button href={`/vault${vaultId ? `/${vaultId}` : ''}`}>Cancel</Button>
         <Button type="submit" styling='primary'>Create Vault</Button>
       </FormButtons>
     </form>

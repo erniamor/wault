@@ -58,9 +58,7 @@ const VaultFormSchema = z.object({
   description: z.string()
     .max(255, { message: "Description must be less than 255 characters." })
     .optional(),
-  // vaultId: z.string({
-  //   invalid_type_error: 'Please select a vault.',
-  // }),
+  // vaultId: z.string().optional(),
   // date: z.string(),
 });
 
@@ -76,7 +74,7 @@ export type State = {
   message?: string | null;
 };
 
-export async function createVault(prevState: State, formData: FormData) {
+export async function createVault(vaultId: string | null, prevState: State, formData: FormData) {
 
   // Validate form fields using Zod
   const validatedFields = CreateVault.safeParse({
@@ -100,8 +98,8 @@ export async function createVault(prevState: State, formData: FormData) {
 
   try {
     await sql`
-      INSERT INTO vaults (title, description, user_id)
-      VALUES (${title}, ${description}, ${userId})
+      INSERT INTO vaults (title, description, user_id, vault_id)
+      VALUES (${title}, ${description}, ${userId}, ${vaultId})
     `;
   } catch (error) {
     return {
@@ -109,8 +107,8 @@ export async function createVault(prevState: State, formData: FormData) {
     };
   }
 
-  revalidatePath('/vault');
-  redirect('/vault');
+  revalidatePath(`/vault${vaultId ? `/${vaultId}` : ''}`);
+  redirect(`/vault${vaultId ? `/${vaultId}` : ''}`);
 }
 
 
