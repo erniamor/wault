@@ -1,4 +1,4 @@
-import { fetchVaultById } from '@/api/data';
+import { fetchVaultById } from '@/api/vault';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import DeleteVaultForm from '@/components/vault/DeleteVaultForm';

@@ -1,7 +1,7 @@
 'use client';
 
 import Button from '@/components/Button';
-import { State, createVault } from '@/api/actions';
+import { State, createVault } from '@/api/vault';
 import { useFormState } from 'react-dom';
 import Input from '../fields/Input';
 import TextArea from '../fields/TextArea';

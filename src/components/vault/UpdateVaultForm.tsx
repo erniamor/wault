@@ -1,9 +1,9 @@
 'use client';
 
-import Button from '@/components/Button';
-import { State, updateVault } from '@/api/actions';
-import { useFormState } from 'react-dom';
 import type { Vault } from '@/types/vault';
+import { State, updateVault } from '@/api/vault';
+import { useFormState } from 'react-dom';
+import Button from '@/components/Button';
 import Input from '../fields/Input';
 import TextArea from '../fields/TextArea';
 import FormError from '../form/FormError';

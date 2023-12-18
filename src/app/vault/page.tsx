@@ -1,6 +1,6 @@
 import VaultCard from '@/components/vault/VaultCard';
 import { Metadata } from 'next';
-import { fetchRootVaults } from '@/api/data';
+import { fetchRootVaults } from '@/api/vault';
 import AddMenu from '@/components/AddMenu';
 
 export const metadata: Metadata = {

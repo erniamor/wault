@@ -1,8 +1,8 @@
 'use client';
 
-import Button from '@/components/Button';
-import { deleteVault } from '@/api/actions';
 import type { Vault } from '@/types/vault';
+import Button from '@/components/Button';
+import { deleteVault } from '@/api/vault';
 import FormFields from '../form/FormFields';
 import FormButtons from '../form/FormButtons';
 

@@ -1,4 +1,5 @@
-import { fetchVaultsByVaultId, fetchElementsByVaultId } from '@/api/data';
+import { fetchVaultsByVaultId } from '@/api/vault';
+import { fetchElementsByVaultId } from '@/api/element';
 import { Metadata } from 'next';
 import VaultCard from '@/components/vault/VaultCard';
 import ElementCard from '@/components/ElementCard';
