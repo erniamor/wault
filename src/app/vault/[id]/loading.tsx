@@ -1,4 +1,4 @@
-import TopLoading from "@/components/TopLoading";
+import ProgressBar from "@/components/ProgressBar";
 export default function Loading() {
-  return <TopLoading />
+  return <ProgressBar />
 }

@@ -7,7 +7,6 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-
   return <Main>
     <Title>Create a Vault</Title>
     <CreateVaultForm />
