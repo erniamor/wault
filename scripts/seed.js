@@ -3,7 +3,7 @@ const {
   USERS,
   VAULTS,
   ELEMENTS,
-} = require('../src/logic/placeholder.js');
+} = require('./placeholder.js');
 const bcrypt = require('bcrypt');
 
 async function seedUsers(client) {

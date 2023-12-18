@@ -3,7 +3,7 @@
 import Button from '@/components/Button';
 import { State, updateVault } from '@/api/actions';
 import { useFormState } from 'react-dom';
-import { Vault } from '@/logic/definitions';
+import type { Vault } from '@/types/vault';
 import Input from '../fields/Input';
 import TextArea from '../fields/TextArea';
 import FormError from '../form/FormError';

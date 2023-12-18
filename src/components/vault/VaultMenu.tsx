@@ -1,6 +1,6 @@
 'use client';
 
-import { Vault } from '@/logic/definitions';
+import type { Vault } from '@/types/vault';
 import { CiTurnL1, CiMenuBurger, CiEdit, CiTrash } from "react-icons/ci";
 import Link from 'next/link';
 import { usePathname } from 'next/navigation'

@@ -1,4 +1,4 @@
-import { Vault } from '@/logic/definitions';
+import type { Vault } from '@/types/vault';
 import Link from 'next/link';
 import { FaFolder } from "react-icons/fa";
 

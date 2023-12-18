@@ -1,4 +1,4 @@
-import { Element } from '@/logic/definitions';
+import type { Element } from '@/types/element';
 import Link from 'next/link';
 import { FaLink } from "react-icons/fa6";
 

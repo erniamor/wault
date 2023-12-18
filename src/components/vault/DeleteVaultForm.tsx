@@ -2,7 +2,7 @@
 
 import Button from '@/components/Button';
 import { deleteVault } from '@/api/actions';
-import { Vault } from '@/logic/definitions';
+import type { Vault } from '@/types/vault';
 import FormFields from '../form/FormFields';
 import FormButtons from '../form/FormButtons';
 

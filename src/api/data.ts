@@ -1,9 +1,7 @@
 import { sql } from '@vercel/postgres';
-import {
-  Vault,
-  Element,
-  User,
-} from '../logic/definitions';
+import type { Vault } from '../types/vault';
+import type { Element } from '../types/element';
+// import type { User } from '../types/user';
 
 export async function fetchRootVaults() {
   try {
