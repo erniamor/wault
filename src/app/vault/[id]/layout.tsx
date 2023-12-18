@@ -1,7 +1,8 @@
 import { fetchVaultById } from '@/logic/data';
 import { notFound } from 'next/navigation';
 import VaultMenu from '@/components/vault/VaultMenu';
-import VaultTitle from '@/components/vault/VaultTitle';
+import Title from '@/components/Title';
+import Main from '@/components/Main';
 
 export default async function VaultLayout({ children, params }: {
   children: React.ReactNode,
@@ -14,20 +15,14 @@ export default async function VaultLayout({ children, params }: {
     notFound();
   }
 
-  return <main>
-    <div className="w-full px-5">
-      <div className="relative">
-        <VaultMenu vault={vault} />
-      </div>
-      <div className="pt-12">
-        <VaultTitle>
-          {vault.title}
-        </VaultTitle>
-      </div>
-      <div className='mt-5'>
-        {children}
-      </div>
+  return <Main>
+    <div className="relative -mt-5">
+      <VaultMenu vault={vault} />
     </div>
-  </main>
+    <div className="pt-12">
+      <Title>{vault.title}</Title>
+    </div>
+    {children}
+  </Main>
 
 }
