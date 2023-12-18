@@ -1,4 +1,4 @@
-import { fetchVaultById } from '@/logic/data';
+import { fetchVaultById } from '@/api/data';
 import { notFound } from 'next/navigation';
 import VaultMenu from '@/components/vault/VaultMenu';
 import Title from '@/components/Title';

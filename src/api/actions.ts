@@ -5,7 +5,7 @@ import { sql } from '@vercel/postgres';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { USERS } from '../logic/placeholder';
-import { Vault } from './definitions';
+import { Vault } from '../logic/definitions';
 
 const VaultFormSchema = z.object({
   id: z.string(),

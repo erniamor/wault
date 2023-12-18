@@ -1,7 +1,7 @@
 'use client';
 
 import Button from '@/components/Button';
-import { State, updateVault } from '@/logic/actions';
+import { State, updateVault } from '@/api/actions';
 import { useFormState } from 'react-dom';
 import { Vault } from '@/logic/definitions';
 import Input from '../fields/Input';

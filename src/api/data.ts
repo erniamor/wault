@@ -3,7 +3,7 @@ import {
   Vault,
   Element,
   User,
-} from './definitions';
+} from '../logic/definitions';
 
 export async function fetchRootVaults() {
   try {
