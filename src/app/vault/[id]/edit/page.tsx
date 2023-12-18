@@ -1,7 +1,7 @@
 import { fetchVaultById } from '@/logic/data';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import EditVaultForm from '@/components/vault/EditVaultForm';
+import EditVaultForm from '@/components/vault/UpdateVaultForm';
 
 export const metadata: Metadata = {
   title: 'Edit a Vault',
