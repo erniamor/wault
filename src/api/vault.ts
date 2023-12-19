@@ -110,11 +110,15 @@ export async function createVault(vaultId: string | null, prevState: State, form
   const userId = USERS[0].id;
   // const date = new Date().toISOString().split('T')[0];
 
+  let insertedId: string;
+
   try {
-    await sql`
+    const sqlResult = await sql`
       INSERT INTO vaults (title, description, user_id, vault_id)
       VALUES (${title}, ${description}, ${userId}, ${vaultId})
+      RETURNING id
     `;
+    insertedId = sqlResult.rows[0].id;
   } catch (error) {
     return {
       message: 'Database Error: Failed to Create Vault.',
@@ -123,7 +127,7 @@ export async function createVault(vaultId: string | null, prevState: State, form
 
   revalidatePath(`/vault${vaultId ? `/${vaultId}` : ''}`);
   revalidatePath(`/search`);
-  redirect(`/vault${vaultId ? `/${vaultId}` : ''}`);
+  redirect(`/vault/${insertedId}`);
 }
 
 

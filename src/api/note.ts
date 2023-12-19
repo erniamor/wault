@@ -7,6 +7,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { unstable_noStore as noStore } from 'next/cache';
 import { USERS } from '../../scripts/placeholder';
+import * as cheerio from 'cheerio';
 
 export async function searchNotes() {
   noStore();
@@ -107,11 +108,16 @@ export async function createNote(vaultId: string, prevState: State, formData: Fo
   const userId = USERS[0].id;
   // const date = new Date().toISOString().split('T')[0];
 
+  let insertedId: string;
+
   try {
-    await sql`
+    const sqlResult = await sql`
       INSERT INTO notes (title, description, content, url, user_id, vault_id)
       VALUES (${title}, ${description}, ${content}, ${url}, ${userId}, ${vaultId})
+      RETURNING id
     `;
+    insertedId = sqlResult.rows[0].id;
+
   } catch (error) {
     return {
       message: 'Database Error: Failed to Create Note.',
@@ -120,7 +126,72 @@ export async function createNote(vaultId: string, prevState: State, formData: Fo
 
   revalidatePath(`/vault/${vaultId}`);
   revalidatePath(`/search`);
-  redirect(`/vault/${vaultId}`);
+  redirect(`/note/${insertedId}`);
+}
+
+
+export type UrlState = {
+  errors?: {
+    url?: string[];
+  };
+  message?: string | null;
+};
+
+const CreateNoteFromUrl = NoteFormSchema.pick({ url: true });
+
+export async function createNoteFromUrl(vaultId: string, prevState: UrlState, formData: FormData) {
+
+  // Validate form fields using Zod
+  const validatedFields = CreateNoteFromUrl.safeParse({
+    url: formData.get('url'),
+  });
+
+  // If form validation fails, return errors early. Otherwise, continue.
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Missing Fields. Failed to Create Note.',
+    };
+  }
+
+  // Prepare data for insertion into the database
+  const { url } = validatedFields.data;
+  const userId = USERS[0].id;
+  // const date = new Date().toISOString().split('T')[0];
+
+
+  const fetchResult = await fetch(url as string)
+  const html = await fetchResult.text()
+  const $ = cheerio.load(html);
+
+  const title = $('meta[property="og:title"]').attr('content') || $('title').text() || $('meta[name="title"]').attr('content')
+  const description = $('meta[property="og:description"]').attr('content') || $('meta[name="description"]').attr('content')
+  // const url = $('meta[property="og:url"]').attr('content')
+  // const site_name = $('meta[property="og:site_name"]').attr('content')
+  // const image = $('meta[property="og:image"]').attr('content') || $('meta[property="og:image:url"]').attr('content')
+  // const icon = $('link[rel="icon"]').attr('href') || $('link[rel="shortcut icon"]').attr('href')
+  // const keywords = $('meta[property="og:keywords"]').attr('content') || $('meta[name="keywords"]').attr('content')
+
+  let insertedId: string;
+
+  try {
+    const insertResult = await sql`
+      INSERT INTO notes (title, description, url, user_id, vault_id)
+      VALUES (${title}, ${description}, ${url}, ${userId}, ${vaultId})
+      RETURNING id
+    `;
+
+    insertedId = insertResult.rows[0].id;
+
+  } catch (error) {
+    return {
+      message: 'Database Error: Failed to Create Note by Url.',
+    };
+  }
+
+  revalidatePath(`/vault/${vaultId}`);
+  revalidatePath(`/search`);
+  redirect(`/note/${insertedId}`);
 }
 
 

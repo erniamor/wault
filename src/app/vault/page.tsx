@@ -18,7 +18,7 @@ export default async function Page() {
           <VaultCard key={vault.id} vault={vault} />
         ))}
       </div>
-      <CreateMenu isNoteVisible={false} />
+      <CreateMenu isNoteVisible={false} isLinkVisible={false} />
     </Main>
   );
 }
