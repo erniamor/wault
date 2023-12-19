@@ -98,7 +98,8 @@ async function seedNotes(client) {
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
         title VARCHAR(255) NOT NULL,
         description VARCHAR(255),
-        url VARCHAR(255),
+        content TEXT,
+        url TEXT,
         user_id UUID NOT NULL,
         vault_id UUID NOT NULL
       );
@@ -110,8 +111,8 @@ async function seedNotes(client) {
     const insertedNotes = await Promise.all(
       NOTES.map(
         (note) => client.sql`
-        INSERT INTO notes (title, description, url, user_id, vault_id)
-        VALUES (${note.title}, ${note.description}, ${note.url}, ${note.user_id}, ${note.vault_id})
+        INSERT INTO notes (title, description, content, url, user_id, vault_id)
+        VALUES (${note.title}, ${note.description}, ${note.content}, ${note.url}, ${note.user_id}, ${note.vault_id})
         ON CONFLICT (id) DO NOTHING;
       `,
       ),

@@ -13,7 +13,7 @@ export default function TextArea({
   value,
   label,
   placeholder,
-  rows = 4,
+  rows = 3,
   errors
 }: InputProps) {
   const id = useId()

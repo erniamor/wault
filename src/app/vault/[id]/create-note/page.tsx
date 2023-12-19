@@ -1,11 +1,9 @@
 import { Metadata } from 'next';
+import CreateNoteForm from '@/components/note/CreateNoteForm';
 export const metadata: Metadata = {
-  title: 'Add Note',
+  title: 'Create Note',
 };
 
-export default async function Page() {
-
-  return <main className="w-full">
-    Add Note
-  </main>
+export default async function Page({ params }: { params: { id: string } }) {
+  return <CreateNoteForm vaultId={params.id} />
 }

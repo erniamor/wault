@@ -69,13 +69,12 @@ const VaultFormSchema = z.object({
   title: z.string()
     .trim()
     .max(255, { message: "Title must be less than 255 characters." })
-    .refine((val) => val !== '', {
+    .refine((val: string) => val !== '', {
       message: "Title is required.",
     }),
   description: z.string()
     .max(255, { message: "Description must be less than 255 characters." })
     .optional(),
-  // vaultId: z.string().optional(),
   // date: z.string(),
 });
 
@@ -84,7 +83,6 @@ const CreateVault = VaultFormSchema.omit({ id: true/* , date: true */ });
 // This is temporary until @types/react-dom is updated
 export type State = {
   errors?: {
-    // vaultId?: string[];
     title?: string[];
     description?: string[];
   };
@@ -95,7 +93,6 @@ export async function createVault(vaultId: string | null, prevState: State, form
 
   // Validate form fields using Zod
   const validatedFields = CreateVault.safeParse({
-    // vaultId: formData.get('vaultId'),
     title: formData.get('title'),
     description: formData.get('description'),
   });
@@ -138,7 +135,6 @@ export async function updateVault(vault: Vault, prevState: State, formData: Form
 
   // Validate form fields using Zod
   const validatedFields = UpdateVault.safeParse({
-    // vaultId: formData.get('vaultId'),
     title: formData.get('title'),
     description: formData.get('description'),
   });
