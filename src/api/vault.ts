@@ -4,10 +4,12 @@ import type { Vault } from '../types/vault';
 import { sql } from '@vercel/postgres';
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
+import { unstable_noStore as noStore } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { USERS } from '../../scripts/placeholder';
 
 export async function searchVaults() {
+  noStore();
   try {
     const vaults = await sql<Vault>`
       SELECT * FROM vaults 
@@ -20,6 +22,7 @@ export async function searchVaults() {
 }
 
 export async function fetchRootVaults() {
+  noStore();
   try {
     const vaults = await sql<Vault>`
       SELECT * FROM vaults
@@ -32,6 +35,7 @@ export async function fetchRootVaults() {
   }
 }
 export async function fetchVaultById(id: string) {
+  noStore();
   try {
     const vaults = await sql<Vault>`
       SELECT * FROM vaults
@@ -44,6 +48,7 @@ export async function fetchVaultById(id: string) {
   }
 }
 export async function fetchVaultsByVaultId(id: string) {
+  noStore();
   try {
     const vaults = await sql<Vault>`
       SELECT * FROM vaults
@@ -120,6 +125,7 @@ export async function createVault(vaultId: string | null, prevState: State, form
   }
 
   revalidatePath(`/vault${vaultId ? `/${vaultId}` : ''}`);
+  revalidatePath(`/search`);
   redirect(`/vault${vaultId ? `/${vaultId}` : ''}`);
 }
 
@@ -164,6 +170,7 @@ export async function updateVault(vault: Vault, prevState: State, formData: Form
 
   revalidatePath(`/vault/${vault.id}`);
   revalidatePath(`/vault${vault.vault_id ? `/${vault.vault_id}` : ''}`);
+  revalidatePath(`/search`);
   redirect(`/vault/${vault.id}`);
 
 }
@@ -179,6 +186,7 @@ export async function deleteVault(vault: Vault) {
   }
 
   revalidatePath(`/vault${vault.vault_id ? `/${vault.vault_id}` : ''}`);
+  revalidatePath(`/search`);
   redirect(`/vault${vault.vault_id ? `/${vault.vault_id}` : ''}`);
 
 }

@@ -2,12 +2,13 @@ const { db } = require('@vercel/postgres');
 const {
   USERS,
   VAULTS,
-  ELEMENTS,
+  NOTES,
 } = require('./placeholder.js');
 const bcrypt = require('bcrypt');
 
 async function seedUsers(client) {
   try {
+    await client.sql`DROP TABLE IF EXISTS users;`;
     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
     // Create the "users" table if it doesn't exist
     const createTable = await client.sql`
@@ -47,6 +48,7 @@ async function seedUsers(client) {
 
 async function seedVaults(client) {
   try {
+    await client.sql`DROP TABLE IF EXISTS vaults;`;
     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
 
     // Create the "vaults" table if it doesn't exist
@@ -85,13 +87,14 @@ async function seedVaults(client) {
   }
 }
 
-async function seedElements(client) {
+async function seedNotes(client) {
   try {
+    await client.sql`DROP TABLE IF EXISTS notes;`;
     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
 
-    // Create the "elements" table if it doesn't exist
+    // Create the "notes" table if it doesn't exist
     const createTable = await client.sql`
-      CREATE TABLE IF NOT EXISTS elements (
+      CREATE TABLE IF NOT EXISTS notes (
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
         title VARCHAR(255) NOT NULL,
         description VARCHAR(255),
@@ -101,27 +104,27 @@ async function seedElements(client) {
       );
     `;
 
-    console.log(`Created "elements" table`);
+    console.log(`Created "notes" table`);
 
-    // Insert data into the "elements" table
-    const insertedElements = await Promise.all(
-      ELEMENTS.map(
-        (element) => client.sql`
-        INSERT INTO elements (title, description, url, user_id, vault_id)
-        VALUES (${element.title}, ${element.description}, ${element.url}, ${element.user_id}, ${element.vault_id})
+    // Insert data into the "notes" table
+    const insertedNotes = await Promise.all(
+      NOTES.map(
+        (note) => client.sql`
+        INSERT INTO notes (title, description, url, user_id, vault_id)
+        VALUES (${note.title}, ${note.description}, ${note.url}, ${note.user_id}, ${note.vault_id})
         ON CONFLICT (id) DO NOTHING;
       `,
       ),
     );
 
-    console.log(`Seeded ${insertedElements.length} elements`);
+    console.log(`Seeded ${insertedNotes.length} notes`);
 
     return {
       createTable,
-      elements: insertedElements,
+      notes: insertedNotes,
     };
   } catch (error) {
-    console.error('Error seeding elements:', error);
+    console.error('Error seeding notes:', error);
     throw error;
   }
 }
@@ -131,7 +134,7 @@ async function main() {
 
   await seedUsers(client);
   await seedVaults(client);
-  await seedElements(client);
+  await seedNotes(client);
 
   await client.end();
 }

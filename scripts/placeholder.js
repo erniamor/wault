@@ -34,7 +34,7 @@ const VAULTS = [
   },
 ];
 
-const ELEMENTS = [
+const NOTES = [
   {
     url: 'https://github.com/',
     title: 'Github',
@@ -76,5 +76,5 @@ const ELEMENTS = [
 module.exports = {
   USERS,
   VAULTS,
-  ELEMENTS,
+  NOTES,
 };

@@ -1,8 +1,8 @@
 import { fetchVaultsByVaultId } from '@/api/vault';
-import { fetchElementsByVaultId } from '@/api/element';
+import { fetchNotesByVaultId } from '@/api/note';
 import { Metadata } from 'next';
 import VaultCard from '@/components/vault/VaultCard';
-import ElementCard from '@/components/ElementCard';
+import NoteCard from '@/components/NoteCard';
 import CreateMenu from '@/components/CreateMenu';
 import VaultEmpty from '@/components/vault/VaultEmpty';
 
@@ -13,14 +13,14 @@ export const metadata: Metadata = {
 export default async function Page({ params }: { params: { id: string } }) {
   const id = params.id;
   const vaults = await fetchVaultsByVaultId(id);
-  const elements = await fetchElementsByVaultId(id);
+  const notes = await fetchNotesByVaultId(id);
   return <>
-    {vaults.length + elements.length > 0 ? <div className="w-full flex flex-col gap-3">
+    {vaults.length + notes.length > 0 ? <div className="w-full flex flex-col gap-3">
       {vaults.map((vault) => (
         <VaultCard key={vault.id} vault={vault} />
       ))}
-      {elements.map((element) => (
-        <ElementCard key={element.id} element={element} />
+      {notes.map((note) => (
+        <NoteCard key={note.id} note={note} />
       ))}
     </div> : <VaultEmpty vaultId={id} />}
     <CreateMenu vaultId={id} />
