@@ -12,31 +12,42 @@ type CreateMenuProps = {
 
 export default function CreateMenu({ vaultId, isNoteVisible = true, isLinkVisible = true, isFolderVisible = true }: CreateMenuProps) {
   return (
-    <div className="fixed bottom-5 right-5 drop-shadow-lg">
-      <div className="flex flex-row gap-2 items-baseline">
+    <div className="fixed bottom-5 left-5 right-5 drop-shadow-lg">
 
-        {isLinkVisible && <Link
-          href={vaultId ? `/vault/${vaultId}/create-link` : "/vault/create-link"}
-          className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white"
-        >
-          <FaLink size={16} />
-        </Link>}
+      <div className="flex flex-row justify-between items-baseline">
 
-        {isNoteVisible && <Link
-          href={vaultId ? `/vault/${vaultId}/create-note` : "/vault/create-note"}
-          className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white"
-        >
-          <TiDocumentAdd size={22} />
-        </Link>}
+        <div className="flex flex-row gap-2 items-baseline">
 
-        {isFolderVisible && <Link
-          href={vaultId ? `/vault/${vaultId}/create-vault` : "/vault/create-vault"}
-          className="w-14 h-14 rounded-full bg-blue-500 flex items-center justify-center text-white"
-        >
-          <AiFillFolderAdd size={32} />
-        </Link>}
+          {isFolderVisible && <Link
+            href={vaultId ? `/vault/${vaultId}/create-vault` : "/vault/create-vault"}
+            className="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center text-white"
+          >
+            <AiFillFolderAdd size={26} />
+          </Link>}
 
+        </div>
+
+
+        <div className="flex flex-row gap-2 items-baseline">
+
+          {isLinkVisible && <Link
+            href={vaultId ? `/vault/${vaultId}/create-link` : "/vault/create-link"}
+            className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white"
+          >
+            <FaLink size={18} />
+          </Link>}
+
+          {isNoteVisible && <Link
+            href={vaultId ? `/vault/${vaultId}/create-note` : "/vault/create-note"}
+            className="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center text-white"
+          >
+            <TiDocumentAdd size={26} />
+          </Link>}
+
+        </div>
       </div>
+
+
     </div>
   )
 }
