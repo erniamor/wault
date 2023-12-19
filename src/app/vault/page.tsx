@@ -10,7 +10,8 @@ export const metadata: Metadata = {
 
 export default async function Page() {
   const vaults = await fetchRootVaults();
-
+  // TODO : add empty message if no vault found
+  // TODO : make notes available at root level
   return (
     <Main>
       <div className="w-full flex flex-col gap-3 mb-16">
