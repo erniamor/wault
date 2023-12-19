@@ -4,8 +4,8 @@ import type { Vault } from '../types/vault';
 import { sql } from '@vercel/postgres';
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
-import { unstable_noStore as noStore } from 'next/cache';
 import { redirect } from 'next/navigation';
+import { unstable_noStore as noStore } from 'next/cache';
 import { USERS } from '../../scripts/placeholder';
 
 export async function searchVaults() {

@@ -1,19 +1,19 @@
-import { fetchVaultById } from '@/api/vault';
+import { fetchNoteById } from '@/api/note';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import DeleteVaultForm from '@/components/vault/DeleteVaultForm';
+import DeleteNoteForm from '@/components/note/DeleteNoteForm';
 
 export const metadata: Metadata = {
-  title: 'Remove a Vault',
+  title: 'Delete a Note',
 };
 
 export default async function Page({ params }: { params: { id: string } }) {
   const id = params.id;
-  const vault = await fetchVaultById(id);
-  if (!vault) {
+  const note = await fetchNoteById(id);
+  if (!note) {
     notFound();
   }
   return (
-    <DeleteVaultForm vault={vault} />
+    <DeleteNoteForm note={note} />
   );
 }

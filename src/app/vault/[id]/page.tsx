@@ -2,7 +2,7 @@ import { fetchVaultsByVaultId } from '@/api/vault';
 import { fetchNotesByVaultId } from '@/api/note';
 import { Metadata } from 'next';
 import VaultCard from '@/components/vault/VaultCard';
-import NoteCard from '@/components/NoteCard';
+import NoteCard from '@/components/note/NoteCard';
 import CreateMenu from '@/components/CreateMenu';
 import VaultEmpty from '@/components/vault/VaultEmpty';
 

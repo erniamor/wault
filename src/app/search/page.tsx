@@ -4,7 +4,7 @@ import Main from '@/components/Main';
 import { searchVaults } from '@/api/vault';
 import { searchNotes } from '@/api/note';
 import VaultCard from '@/components/vault/VaultCard';
-import NoteCard from '@/components/NoteCard';
+import NoteCard from '@/components/note/NoteCard';
 export const metadata: Metadata = {
   title: 'Search',
 };
