@@ -7,6 +7,18 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { USERS } from '../../scripts/placeholder';
 
+export async function searchVaults() {
+  try {
+    const vaults = await sql<Vault>`
+      SELECT * FROM vaults 
+    `;
+    return vaults.rows;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to search vaults.');
+  }
+}
+
 export async function fetchRootVaults() {
   try {
     const vaults = await sql<Vault>`

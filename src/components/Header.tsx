@@ -17,8 +17,8 @@ export default function Header() {
           <h1 className={`${inter.className} text-2xl text-white`}>Wault</h1>
         </Link>
         <div className='flex flex-row gap-5 text-white'>
-          <FaSearch size={30} />
-          <FaCircleUser size={30} />
+          <Link href={`/search`}><FaSearch size={24} /></Link>
+          <Link href={`/`}><FaCircleUser size={24} /></Link>
         </div>
       </div>
     </div >
