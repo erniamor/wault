@@ -15,7 +15,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   const vaults = await fetchVaultsByVaultId(id);
   const notes = await fetchNotesByVaultId(id);
   return <>
-    {vaults.length + notes.length > 0 ? <div className="w-full flex flex-col gap-3">
+    {vaults.length + notes.length > 0 ? <div className="w-full flex flex-col gap-3 mb-16">
       {vaults.map((vault) => (
         <VaultCard key={vault.id} vault={vault} />
       ))}

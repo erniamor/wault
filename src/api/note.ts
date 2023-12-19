@@ -158,19 +158,33 @@ export async function createNoteFromUrl(vaultId: string, prevState: UrlState, fo
   const { url } = validatedFields.data;
   const userId = USERS[0].id;
   // const date = new Date().toISOString().split('T')[0];
-
+  console.log('url:', url);
 
   const fetchResult = await fetch(url as string)
   const html = await fetchResult.text()
   const $ = cheerio.load(html);
 
-  const title = $('meta[property="og:title"]').attr('content') || $('title').text() || $('meta[name="title"]').attr('content')
-  const description = $('meta[property="og:description"]').attr('content') || $('meta[name="description"]').attr('content')
+  let title = $('meta[property="og:title"]').attr('content') || $('title').text() || $('meta[name="title"]').attr('content');
+  let description = $('meta[property="og:description"]').attr('content') || $('meta[name="description"]').attr('content')
   // const url = $('meta[property="og:url"]').attr('content')
   // const site_name = $('meta[property="og:site_name"]').attr('content')
   // const image = $('meta[property="og:image"]').attr('content') || $('meta[property="og:image:url"]').attr('content')
   // const icon = $('link[rel="icon"]').attr('href') || $('link[rel="shortcut icon"]').attr('href')
   // const keywords = $('meta[property="og:keywords"]').attr('content') || $('meta[name="keywords"]').attr('content')
+
+  if (!title) {
+    return {
+      message: 'Failed to Create Note. No title found.',
+    };
+  }
+
+  if (title.length > 255) {
+    title = title.slice(0, 252) + '...';
+  }
+
+  if (description && description.length > 255) {
+    description = description.slice(0, 252) + '...';
+  }
 
   let insertedId: string;
 
@@ -184,6 +198,7 @@ export async function createNoteFromUrl(vaultId: string, prevState: UrlState, fo
     insertedId = insertResult.rows[0].id;
 
   } catch (error) {
+    console.error('Database Error:', error);
     return {
       message: 'Database Error: Failed to Create Note by Url.',
     };

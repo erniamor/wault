@@ -13,7 +13,7 @@ export default async function Page() {
 
   return (
     <Main>
-      <div className="w-full flex flex-col gap-3 mb-20">
+      <div className="w-full flex flex-col gap-3 mb-16">
         {vaults.map((vault) => (
           <VaultCard key={vault.id} vault={vault} />
         ))}
