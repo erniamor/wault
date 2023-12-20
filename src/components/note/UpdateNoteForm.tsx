@@ -25,12 +25,12 @@ export default function Form({ note }: FormProps) {
         <TextArea name="description" label="Description" value={note.description || ''} errors={state.errors?.description} rows={2} />
         <TextArea name="content" label="Content" value={note.content || ''} errors={state.errors?.content} rows={10} />
         <Input name="url" label="Url" value={note.url || ''} errors={state.errors?.url} />
-        <FormError message={state.message} />
       </FormFields>
       <FormButtons>
         <Button href={`/note/${note.id}`}>Cancel</Button>
         <Button type="submit" styling='primary'>Update Note</Button>
       </FormButtons>
+      <FormError message={state.message} />
     </form>
   );
 }

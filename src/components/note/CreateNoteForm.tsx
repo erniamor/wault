@@ -24,12 +24,12 @@ export default function Form({ vaultId }: FormProps) {
         <TextArea name="description" label="Description" errors={state.errors?.description} rows={2} />
         <TextArea name="content" label="Content" errors={state.errors?.content} rows={10} />
         <Input name="url" label="Url" errors={state.errors?.url} />
-        <FormError message={state.message} />
       </FormFields>
       <FormButtons>
         <Button href={`/vault/${vaultId}`}>Cancel</Button>
         <Button type="submit" styling='primary'>Create Note</Button>
       </FormButtons>
+      <FormError message={state.message} />
     </form>
   );
 }

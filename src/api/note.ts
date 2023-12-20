@@ -137,12 +137,16 @@ export type UrlState = {
   message?: string | null;
 };
 
-const CreateNoteFromUrl = NoteFormSchema.pick({ url: true });
+
+const UrlFormSchema = z.object({
+  url: z.string().url({ message: "Url must be a valid URL." })
+    .max(2000, { message: "Url must be less than 2000 characters." })
+});
 
 export async function createNoteFromUrl(vaultId: string, prevState: UrlState, formData: FormData) {
 
   // Validate form fields using Zod
-  const validatedFields = CreateNoteFromUrl.safeParse({
+  const validatedFields = UrlFormSchema.safeParse({
     url: formData.get('url'),
   });
 
@@ -158,7 +162,6 @@ export async function createNoteFromUrl(vaultId: string, prevState: UrlState, fo
   const { url } = validatedFields.data;
   const userId = USERS[0].id;
   // const date = new Date().toISOString().split('T')[0];
-  console.log('url:', url);
 
   const fetchResult = await fetch(url as string)
   const html = await fetchResult.text()

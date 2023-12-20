@@ -8,6 +8,19 @@ import { redirect } from 'next/navigation';
 import { unstable_noStore as noStore } from 'next/cache';
 import { USERS } from '../../scripts/placeholder';
 
+export async function searchVaults() {
+  noStore();
+  try {
+    const vaults = await sql<Vault>`
+      SELECT * FROM vaults 
+    `;
+    return vaults.rows;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to search vaults.');
+  }
+}
+
 export async function fetchRootVaults() {
   noStore();
   try {
@@ -164,10 +177,8 @@ export async function updateVault(vault: Vault, prevState: State, formData: Form
 
 export async function deleteVault(vault: Vault) {
 
-  // TODO: delete all vault children
-
   try {
-    await sql`DELETE FROM vaults WHERE id = ${vault.id}`;
+    await deleteVaultRecursively(vault);
   } catch (error) {
     return { message: 'Database Error: Failed to Delete Vault.' };
   }
@@ -175,5 +186,20 @@ export async function deleteVault(vault: Vault) {
   revalidatePath(`/vault${vault.vault_id ? `/${vault.vault_id}` : ''}`);
   revalidatePath(`/search`);
   redirect(`/vault${vault.vault_id ? `/${vault.vault_id}` : ''}`);
+
+}
+
+async function deleteVaultRecursively(vault: Vault) {
+
+  // delete all vault notes
+  await sql`DELETE FROM notes WHERE vault_id = ${vault.id}`;
+
+  const vaults = await fetchVaultsByVaultId(vault.id);
+
+  for (const vault of vaults) {
+    await deleteVaultRecursively(vault);
+  }
+
+  await sql`DELETE FROM vaults WHERE id = ${vault.id}`;
 
 }
