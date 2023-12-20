@@ -21,9 +21,9 @@ export default function Form({ vaultId }: FormProps) {
     <form action={dispatch}>
       <FormFields>
         <Input name="title" label="Title" errors={state.errors?.title} />
-        <TextArea name="description" label="Description" errors={state.errors?.description} />
-        <Input name="url" label="Url" errors={state.errors?.url} />
+        <TextArea name="description" label="Description" errors={state.errors?.description} rows={2} />
         <TextArea name="content" label="Content" errors={state.errors?.content} rows={10} />
+        <Input name="url" label="Url" errors={state.errors?.url} />
         <FormError message={state.message} />
       </FormFields>
       <FormButtons>

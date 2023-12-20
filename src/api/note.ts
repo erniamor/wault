@@ -210,6 +210,52 @@ export async function createNoteFromUrl(vaultId: string, prevState: UrlState, fo
 }
 
 
+// Use Zod to update the expected types
+const UpdateNote = NoteFormSchema.omit({ id: true/* , date: true */ });
+
+export async function updateNote(note: Note, prevState: State, formData: FormData) {
+
+  // Validate form fields using Zod
+  const validatedFields = UpdateNote.safeParse({
+    title: formData.get('title'),
+    description: formData.get('description'),
+    content: formData.get('content'),
+    url: formData.get('url'),
+  });
+
+  // If form validation fails, return errors early. Otherwise, continue.
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Missing Fields. Failed to Update Note.',
+    };
+  }
+
+  // Prepare data for insertion into the database
+  const { title, description, content, url } = validatedFields.data;
+  const userId = USERS[0].id;
+  // const date = new Date().toISOString().split('T')[0];
+
+  try {
+    await sql`
+      UPDATE notes
+      SET title = ${title}, description = ${description}, content = ${content}, url = ${url}
+      WHERE id = ${note.id}
+    `;
+  } catch (error) {
+    return {
+      message: 'Database Error: Failed to Update Note.',
+    };
+  }
+
+  revalidatePath(`/note/${note.id}`);
+  revalidatePath(`/vault${note.vault_id ? `/${note.vault_id}` : ''}`);
+  revalidatePath(`/search`);
+  redirect(`/note/${note.id}`);
+
+}
+
+
 
 export async function deleteNote(note: Note) {
 

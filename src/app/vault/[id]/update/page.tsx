@@ -1,10 +1,10 @@
 import { fetchVaultById } from '@/api/vault';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import EditVaultForm from '@/components/vault/UpdateVaultForm';
+import UpdateVaultForm from '@/components/vault/UpdateVaultForm';
 
 export const metadata: Metadata = {
-  title: 'Edit a Vault',
+  title: 'Update a Vault',
 };
 
 export default async function Page({ params }: { params: { id: string } }) {
@@ -14,6 +14,6 @@ export default async function Page({ params }: { params: { id: string } }) {
     notFound();
   }
   return (
-    <EditVaultForm vault={vault} />
+    <UpdateVaultForm vault={vault} />
   );
 }

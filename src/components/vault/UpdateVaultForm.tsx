@@ -10,12 +10,14 @@ import FormError from '../form/FormError';
 import FormFields from '../form/FormFields';
 import FormButtons from '../form/FormButtons';
 
-export default function Form({ vault }: { vault: Vault }) {
+type FormProps = {
+  vault: Vault
+}
 
+export default function Form({ vault }: FormProps) {
   const initialState: State = { message: null, errors: {} };
   const updateVaultBinded = updateVault.bind(null, vault);
   const [state, dispatch] = useFormState(updateVaultBinded, initialState);
-
   return (
     <form action={dispatch}>
       <FormFields>

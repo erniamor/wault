@@ -16,7 +16,7 @@ export default function NoteMenu({ note }: { note: Note }) {
       <MenuLink href={`/note/${note.id}`} activeColor='bg-green-600'>
         <FaRegEye />
       </MenuLink>
-      <MenuLink href={`/note/${note.id}/edit`} activeColor='bg-sky-600'>
+      <MenuLink href={`/note/${note.id}/update`} activeColor='bg-sky-600'>
         <CiEdit />
       </MenuLink>
       <MenuLink href={`/note/${note.id}/delete`} activeColor='bg-red-600'>
