@@ -8,7 +8,9 @@ export const metadata: Metadata = {
 
 export default async function Page() {
   return <Main>
-    <Title>Create a Vault</Title>
+    <div className="mb-5">
+      <Title>Create a Vault</Title>
+    </div>
     <CreateVaultForm />
   </Main>
 }

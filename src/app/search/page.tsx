@@ -13,7 +13,9 @@ export default async function Page() {
   const vaults = await searchVaults();
   const notes = await searchNotes();
   return <Main>
-    <Title>Search</Title>
+    <div className="mb-5">
+      <Title>Search</Title>
+    </div>
     {vaults.length + notes.length > 0 ? <div className="w-full flex flex-col gap-3 mb-12">
       {vaults.map((vault) => (
         <VaultCard key={vault.id} vault={vault} />

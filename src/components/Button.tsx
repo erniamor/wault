@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import Link from 'next/link';
+import { CgSpinnerTwoAlt } from "react-icons/cg";
 
 type Styling = 'normal' | 'primary' | 'success' | 'danger' | 'warning';
 
@@ -17,13 +18,18 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   styling?: Styling;
   children: React.ReactNode;
   target?: '_blank' | '_self' | '_parent' | '_top' | string;
+  disabled?: boolean;
+  loading?: boolean;
 }
 
-export default function Button({ href, className, styling = 'normal', target = '_blank', children, ...props }: ButtonProps) {
+export default function Button({ href, className, styling = 'normal', target = '_blank', disabled, loading, children, ...props }: ButtonProps) {
 
   const computedClassName = clsx(
-    'flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 aria-disabled:cursor-not-allowed aria-disabled:opacity-50',
+    'flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ',
     styles[styling],
+    disabled && 'cursor-not-allowed opacity-50',
+    (disabled && styling === 'normal') && 'text-gray-400',
+    loading && 'cursor-wait opacity-50',
     className,
   )
 
@@ -47,9 +53,13 @@ export default function Button({ href, className, styling = 'normal', target = '
   } else {
     return <button
       className={computedClassName}
+      disabled={disabled || loading}
       {...props}
     >
-      {children}
+      {loading
+        ? <CgSpinnerTwoAlt className="animate-spin" />
+        : children
+      }
     </button>;
   }
 }

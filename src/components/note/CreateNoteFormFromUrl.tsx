@@ -1,12 +1,13 @@
 'use client';
 
-import Button from '@/components/Button';
 import { useFormState } from 'react-dom';
+import { UrlState, createNoteFromUrl } from '@/api/note';
 import Input from '../fields/Input';
 import FormFields from '../form/FormFields';
 import FormButtons from '../form/FormButtons';
 import FormError from '../form/FormError';
-import { UrlState, createNoteFromUrl } from '@/api/note';
+import FormSubmitButton from '../form/FormSubmitButton';
+import FormCancelButton from '../form/FormCancelButton';
 
 type FormProps = {
   vaultId: string;
@@ -22,8 +23,8 @@ export default function Form({ vaultId }: FormProps) {
         <Input name="url" label="Url" errors={state?.errors?.url} />
       </FormFields>
       <FormButtons>
-        <Button href={`/vault/${vaultId}`}>Cancel</Button>
-        <Button type="submit" styling='primary'>Add Link</Button>
+        <FormCancelButton href={`/vault/${vaultId}`}>Cancel</FormCancelButton>
+        <FormSubmitButton>Add Link</FormSubmitButton>
       </FormButtons>
       <FormError message={state.message} />
     </form>
