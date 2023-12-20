@@ -16,12 +16,13 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
   styling?: Styling;
   children: React.ReactNode;
+  target?: '_blank' | '_self' | '_parent' | '_top' | string;
 }
 
-export default function Button({ href, className, styling = 'normal', children, ...props }: ButtonProps) {
+export default function Button({ href, className, styling = 'normal', target = '_blank', children, ...props }: ButtonProps) {
 
   const computedClassName = clsx(
-    'flex items-center rounded-lg px-4 py-2 text-sm font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 aria-disabled:cursor-not-allowed aria-disabled:opacity-50',
+    'flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 aria-disabled:cursor-not-allowed aria-disabled:opacity-50',
     styles[styling],
     className,
   )
@@ -30,6 +31,7 @@ export default function Button({ href, className, styling = 'normal', children, 
     if (href.startsWith('http')) {
       return <a
         href={href}
+        target={target}
         className={computedClassName}
       >
         {children}
