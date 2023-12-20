@@ -8,19 +8,6 @@ import { redirect } from 'next/navigation';
 import { unstable_noStore as noStore } from 'next/cache';
 import { USERS } from '../../scripts/placeholder';
 
-export async function searchVaults() {
-  noStore();
-  try {
-    const vaults = await sql<Vault>`
-      SELECT * FROM vaults 
-    `;
-    return vaults.rows;
-  } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to search vaults.');
-  }
-}
-
 export async function fetchRootVaults() {
   noStore();
   try {

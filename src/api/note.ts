@@ -9,16 +9,45 @@ import { unstable_noStore as noStore } from 'next/cache';
 import { USERS } from '../../scripts/placeholder';
 import * as cheerio from 'cheerio';
 
-export async function searchNotes() {
+const ITEMS_PER_PAGE = 12;
+export async function searchNotes(query: string, currentPage: number) {
   noStore();
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
   try {
     const notes = await sql<Note>`
-      SELECT * FROM notes 
+    SELECT *
+    FROM notes
+    WHERE
+      notes.title::text ILIKE ${`%${query}%`} OR
+      notes.description::text ILIKE ${`%${query}%`} OR
+      notes.content::text ILIKE ${`%${query}%`} OR
+      notes.url ILIKE ${`%${query}%`}
+    ORDER BY notes.title ASC
+    LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
     `;
     return notes.rows;
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to search notes.');
+  }
+}
+export async function searchNotesTotalPage(query: string) {
+  noStore();
+  try {
+    const count = await sql`SELECT COUNT(*)
+    FROM notes
+    WHERE
+      notes.title::text ILIKE ${`%${query}%`} OR
+      notes.description::text ILIKE ${`%${query}%`} OR
+      notes.content::text ILIKE ${`%${query}%`} OR
+      notes.url ILIKE ${`%${query}%`}
+  `;
+
+    const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
+    return totalPages;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch total number of notes.');
   }
 }
 
