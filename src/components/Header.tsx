@@ -1,25 +1,14 @@
-import Link from 'next/link';
-import Image from 'next/image';
-import { inter } from '@/assets/fonts';
-import { FaCircleUser } from "react-icons/fa6";
-import { FaSearch } from "react-icons/fa";
-export default function Header() {
+import { auth } from "../auth"
+import HeaderNav from './HeaderNav';
+import HeaderLogo from './HeaderLogo';
+
+export default async function Header() {
+  const session = await auth()
   return (
     <div className="w-full p-4 bg-gray-800">
       <div className="w-full flex flex-row items-center justify-between ">
-        <Link href={`/`} className="flex flex-row items-center gap-3">
-          <Image
-            src="/wault-logo.png"
-            width={40}
-            height={40}
-            alt="Wault logo"
-          />
-          <h1 className={`${inter.className} text-2xl text-white`}>Wault</h1>
-        </Link>
-        <div className='flex flex-row gap-5 text-white'>
-          <Link href={`/search`}><FaSearch size={24} /></Link>
-          <Link href={`/`}><FaCircleUser size={24} /></Link>
-        </div>
+        <HeaderLogo />
+        {session && <HeaderNav />}
       </div>
     </div >
   );
