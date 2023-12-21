@@ -1,28 +1,28 @@
-import { fetchVaultById } from '@/api/vault';
+import { fetchFolderById } from '@/api/folder';
 import { notFound } from 'next/navigation';
-import VaultMenu from '@/components/vault/VaultMenu';
+import FolderMenu from '@/components/folder/FolderMenu';
 import Title from '@/components/Title';
 import Main from '@/components/Main';
 import Description from '@/components/Description';
 
-export default async function VaultLayout({ children, params }: {
+export default async function FolderLayout({ children, params }: {
   children: React.ReactNode,
   params: { id: string }
 }) {
 
   const id = params.id;
-  const vault = await fetchVaultById(id);
-  if (!vault) {
+  const folder = await fetchFolderById(id);
+  if (!folder) {
     notFound();
   }
 
   return <Main>
     <div className="relative -mt-5">
-      <VaultMenu vault={vault} />
+      <FolderMenu folder={folder} />
     </div>
     <div className="pt-12 mb-5">
-      <Title>{vault.title}</Title>
-      {vault.description && <Description>{vault.description}</Description>}
+      <Title>{folder.title}</Title>
+      {folder.description && <Description>{folder.description}</Description>}
     </div>
     {children}
   </Main>

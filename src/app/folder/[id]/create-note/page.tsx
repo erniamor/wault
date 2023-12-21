@@ -1,9 +1,9 @@
 import { Metadata } from 'next';
-import CreateVaultForm from '@/components/vault/CreateVaultForm';
+import CreateNoteForm from '@/components/note/CreateNoteForm';
 export const metadata: Metadata = {
-  title: 'Create Vault',
+  title: 'Create Note',
 };
 
 export default async function Page({ params }: { params: { id: string } }) {
-  return <CreateVaultForm vaultId={params.id} />
+  return <CreateNoteForm folderId={params.id} />
 }

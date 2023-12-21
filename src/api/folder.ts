@@ -1,6 +1,6 @@
 'use server';
 
-import type { Vault } from '../types/vault';
+import type { Folder } from '../types/folder';
 import { sql } from '@vercel/postgres';
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
@@ -8,50 +8,50 @@ import { redirect } from 'next/navigation';
 import { unstable_noStore as noStore } from 'next/cache';
 import { USERS } from '../../scripts/placeholder';
 
-export async function fetchRootVaults() {
+export async function fetchRootFolders() {
   noStore();
   try {
-    const vaults = await sql<Vault>`
-      SELECT * FROM vaults
-      WHERE vault_id IS NULL
+    const folders = await sql<Folder>`
+      SELECT * FROM folders
+      WHERE folder_id IS NULL
     `;
-    return vaults.rows;
+    return folders.rows;
   } catch (error) {
     console.error('Database Error:', error);
-    throw new Error('Failed to fetch root vaults.');
+    throw new Error('Failed to fetch root folders.');
   }
 }
-export async function fetchVaultById(id: string) {
+export async function fetchFolderById(id: string) {
   noStore();
   try {
-    const vaults = await sql<Vault>`
-      SELECT * FROM vaults
+    const folders = await sql<Folder>`
+      SELECT * FROM folders
       WHERE id = ${id}
     `;
-    return vaults.rows[0];
+    return folders.rows[0];
   } catch (error) {
     console.error('Database Error:', error);
-    throw new Error('Failed to fetch vault by id.');
+    throw new Error('Failed to fetch folder by id.');
   }
 }
-export async function fetchVaultsByVaultId(id: string) {
+export async function fetchFoldersByFolderId(id: string) {
   noStore();
   try {
-    const vaults = await sql<Vault>`
-      SELECT * FROM vaults
-      WHERE vault_id = ${id}
+    const folders = await sql<Folder>`
+      SELECT * FROM folders
+      WHERE folder_id = ${id}
     `;
-    return vaults.rows;
+    return folders.rows;
   } catch (error) {
     console.error('Database Error:', error);
-    throw new Error('Failed to fetch vaults by vault id.');
+    throw new Error('Failed to fetch folders by folder id.');
   }
 }
 
 
 
 
-const VaultFormSchema = z.object({
+const FolderFormSchema = z.object({
   id: z.string(),
   title: z.string()
     .trim()
@@ -65,7 +65,7 @@ const VaultFormSchema = z.object({
   // date: z.string(),
 });
 
-const CreateVault = VaultFormSchema.omit({ id: true/* , date: true */ });
+const CreateFolder = FolderFormSchema.omit({ id: true/* , date: true */ });
 
 // This is temporary until @types/react-dom is updated
 export type State = {
@@ -76,10 +76,10 @@ export type State = {
   message?: string | null;
 };
 
-export async function createVault(vaultId: string | null, prevState: State, formData: FormData) {
+export async function createFolder(folderId: string | null, prevState: State, formData: FormData) {
 
   // Validate form fields using Zod
-  const validatedFields = CreateVault.safeParse({
+  const validatedFields = CreateFolder.safeParse({
     title: formData.get('title'),
     description: formData.get('description'),
   });
@@ -88,7 +88,7 @@ export async function createVault(vaultId: string | null, prevState: State, form
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: 'Missing Fields. Failed to Create Vault.',
+      message: 'Missing Fields. Failed to Create Folder.',
     };
   }
 
@@ -101,31 +101,31 @@ export async function createVault(vaultId: string | null, prevState: State, form
 
   try {
     const sqlResult = await sql`
-      INSERT INTO vaults (title, description, user_id, vault_id)
-      VALUES (${title}, ${description}, ${userId}, ${vaultId})
+      INSERT INTO folders (title, description, user_id, folder_id)
+      VALUES (${title}, ${description}, ${userId}, ${folderId})
       RETURNING id
     `;
     insertedId = sqlResult.rows[0].id;
   } catch (error) {
     return {
-      message: 'Database Error: Failed to Create Vault.',
+      message: 'Database Error: Failed to Create Folder.',
     };
   }
 
-  revalidatePath(`/vault${vaultId ? `/${vaultId}` : ''}`);
+  revalidatePath(`/folder${folderId ? `/${folderId}` : ''}`);
   revalidatePath(`/search`);
-  redirect(`/vault/${insertedId}`);
+  redirect(`/folder/${insertedId}`);
 }
 
 
 
 // Use Zod to update the expected types
-const UpdateVault = VaultFormSchema.omit({ id: true/* , date: true */ });
+const UpdateFolder = FolderFormSchema.omit({ id: true/* , date: true */ });
 
-export async function updateVault(vault: Vault, prevState: State, formData: FormData) {
+export async function updateFolder(folder: Folder, prevState: State, formData: FormData) {
 
   // Validate form fields using Zod
-  const validatedFields = UpdateVault.safeParse({
+  const validatedFields = UpdateFolder.safeParse({
     title: formData.get('title'),
     description: formData.get('description'),
   });
@@ -134,7 +134,7 @@ export async function updateVault(vault: Vault, prevState: State, formData: Form
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: 'Missing Fields. Failed to Update Vault.',
+      message: 'Missing Fields. Failed to Update Folder.',
     };
   }
 
@@ -145,48 +145,48 @@ export async function updateVault(vault: Vault, prevState: State, formData: Form
 
   try {
     await sql`
-      UPDATE vaults
+      UPDATE folders
       SET title = ${title}, description = ${description}
-      WHERE id = ${vault.id}
+      WHERE id = ${folder.id}
     `;
   } catch (error) {
     return {
-      message: 'Database Error: Failed to Update Vault.',
+      message: 'Database Error: Failed to Update Folder.',
     };
   }
 
-  revalidatePath(`/vault/${vault.id}`);
-  revalidatePath(`/vault${vault.vault_id ? `/${vault.vault_id}` : ''}`);
+  revalidatePath(`/folder/${folder.id}`);
+  revalidatePath(`/folder${folder.folder_id ? `/${folder.folder_id}` : ''}`);
   revalidatePath(`/search`);
-  redirect(`/vault/${vault.id}`);
+  redirect(`/folder/${folder.id}`);
 
 }
 
-export async function deleteVault(vault: Vault) {
+export async function deleteFolder(folder: Folder) {
 
   try {
-    await deleteVaultRecursively(vault);
+    await deleteFolderRecursively(folder);
   } catch (error) {
-    return { message: 'Database Error: Failed to Delete Vault.' };
+    return { message: 'Database Error: Failed to Delete Folder.' };
   }
 
-  revalidatePath(`/vault${vault.vault_id ? `/${vault.vault_id}` : ''}`);
+  revalidatePath(`/folder${folder.folder_id ? `/${folder.folder_id}` : ''}`);
   revalidatePath(`/search`);
-  redirect(`/vault${vault.vault_id ? `/${vault.vault_id}` : ''}`);
+  redirect(`/folder${folder.folder_id ? `/${folder.folder_id}` : ''}`);
 
 }
 
-async function deleteVaultRecursively(vault: Vault) {
+async function deleteFolderRecursively(folder: Folder) {
 
-  // delete all vault notes
-  await sql`DELETE FROM notes WHERE vault_id = ${vault.id}`;
+  // delete all folder notes
+  await sql`DELETE FROM notes WHERE folder_id = ${folder.id}`;
 
-  const vaults = await fetchVaultsByVaultId(vault.id);
+  const folders = await fetchFoldersByFolderId(folder.id);
 
-  for (const vault of vaults) {
-    await deleteVaultRecursively(vault);
+  for (const folder of folders) {
+    await deleteFolderRecursively(folder);
   }
 
-  await sql`DELETE FROM vaults WHERE id = ${vault.id}`;
+  await sql`DELETE FROM folders WHERE id = ${folder.id}`;
 
 }

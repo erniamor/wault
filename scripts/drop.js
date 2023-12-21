@@ -11,14 +11,14 @@ async function dropUsers(client) {
     throw error;
   }
 }
-async function dropVaults(client) {
+async function dropFolders(client) {
   try {
-    await client.sql`DROP TABLE IF EXISTS vaults;`;
-    console.log(`vaults table dropped`);
+    await client.sql`DROP TABLE IF EXISTS folders;`;
+    console.log(`folders table dropped`);
     return {
     };
   } catch (error) {
-    console.error('Error dropping vaults:', error);
+    console.error('Error dropping folders:', error);
     throw error;
   }
 }
@@ -39,7 +39,7 @@ async function main() {
   const client = await db.connect();
 
   await dropUsers(client);
-  await dropVaults(client);
+  await dropFolders(client);
   await dropNotes(client);
 
   await client.end();

@@ -1,19 +1,19 @@
-import { fetchVaultById } from '@/api/vault';
+import { fetchFolderById } from '@/api/folder';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import UpdateVaultForm from '@/components/vault/UpdateVaultForm';
+import UpdateFolderForm from '@/components/folder/UpdateFolderForm';
 
 export const metadata: Metadata = {
-  title: 'Update a Vault',
+  title: 'Update a Folder',
 };
 
 export default async function Page({ params }: { params: { id: string } }) {
   const id = params.id;
-  const vault = await fetchVaultById(id);
-  if (!vault) {
+  const folder = await fetchFolderById(id);
+  if (!folder) {
     notFound();
   }
   return (
-    <UpdateVaultForm vault={vault} />
+    <UpdateFolderForm folder={folder} />
   );
 }

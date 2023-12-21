@@ -1,19 +1,19 @@
-import { fetchVaultById } from '@/api/vault';
+import { fetchFolderById } from '@/api/folder';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import DeleteVaultForm from '@/components/vault/DeleteVaultForm';
+import DeleteFolderForm from '@/components/folder/DeleteFolderForm';
 
 export const metadata: Metadata = {
-  title: 'Delete a Vault',
+  title: 'Delete a Folder',
 };
 
 export default async function Page({ params }: { params: { id: string } }) {
   const id = params.id;
-  const vault = await fetchVaultById(id);
-  if (!vault) {
+  const folder = await fetchFolderById(id);
+  if (!folder) {
     notFound();
   }
   return (
-    <DeleteVaultForm vault={vault} />
+    <DeleteFolderForm folder={folder} />
   );
 }

@@ -51,17 +51,17 @@ export async function searchNotesTotalPage(query: string) {
   }
 }
 
-export async function fetchNotesByVaultId(id: string) {
+export async function fetchNotesByFolderId(id: string) {
   noStore();
   try {
     const notes = await sql<Note>`
       SELECT * FROM notes
-      WHERE vault_id = ${id}
+      WHERE folder_id = ${id}
     `;
     return notes.rows;
   } catch (error) {
     console.error('Database Error:', error);
-    throw new Error('Failed to fetch notes by vault id.');
+    throw new Error('Failed to fetch notes by folder id.');
   }
 }
 export async function fetchNoteById(id: string) {
@@ -114,7 +114,7 @@ export type State = {
   message?: string | null;
 };
 
-export async function createNote(vaultId: string, prevState: State, formData: FormData) {
+export async function createNote(folderId: string, prevState: State, formData: FormData) {
 
   // Validate form fields using Zod
   const validatedFields = CreateNote.safeParse({
@@ -141,8 +141,8 @@ export async function createNote(vaultId: string, prevState: State, formData: Fo
 
   try {
     const sqlResult = await sql`
-      INSERT INTO notes (title, description, content, url, user_id, vault_id)
-      VALUES (${title}, ${description}, ${content}, ${url}, ${userId}, ${vaultId})
+      INSERT INTO notes (title, description, content, url, user_id, folder_id)
+      VALUES (${title}, ${description}, ${content}, ${url}, ${userId}, ${folderId})
       RETURNING id
     `;
     insertedId = sqlResult.rows[0].id;
@@ -153,7 +153,7 @@ export async function createNote(vaultId: string, prevState: State, formData: Fo
     };
   }
 
-  revalidatePath(`/vault/${vaultId}`);
+  revalidatePath(`/folder/${folderId}`);
   revalidatePath(`/search`);
   redirect(`/note/${insertedId}`);
 }
@@ -172,7 +172,7 @@ const UrlFormSchema = z.object({
     .max(2000, { message: "Url must be less than 2000 characters." })
 });
 
-export async function createNoteFromUrl(vaultId: string, prevState: UrlState, formData: FormData) {
+export async function createNoteFromUrl(folderId: string, prevState: UrlState, formData: FormData) {
 
   // Validate form fields using Zod
   const validatedFields = UrlFormSchema.safeParse({
@@ -222,8 +222,8 @@ export async function createNoteFromUrl(vaultId: string, prevState: UrlState, fo
 
   try {
     const insertResult = await sql`
-      INSERT INTO notes (title, description, url, user_id, vault_id)
-      VALUES (${title}, ${description}, ${url}, ${userId}, ${vaultId})
+      INSERT INTO notes (title, description, url, user_id, folder_id)
+      VALUES (${title}, ${description}, ${url}, ${userId}, ${folderId})
       RETURNING id
     `;
 
@@ -236,7 +236,7 @@ export async function createNoteFromUrl(vaultId: string, prevState: UrlState, fo
     };
   }
 
-  revalidatePath(`/vault/${vaultId}`);
+  revalidatePath(`/folder/${folderId}`);
   revalidatePath(`/search`);
   redirect(`/note/${insertedId}`);
 }
@@ -281,7 +281,7 @@ export async function updateNote(note: Note, prevState: State, formData: FormDat
   }
 
   revalidatePath(`/note/${note.id}`);
-  revalidatePath(`/vault${note.vault_id ? `/${note.vault_id}` : ''}`);
+  revalidatePath(`/folder${note.folder_id ? `/${note.folder_id}` : ''}`);
   revalidatePath(`/search`);
   redirect(`/note/${note.id}`);
 
@@ -297,8 +297,8 @@ export async function deleteNote(note: Note) {
     return { message: 'Database Error: Failed to Delete Note.' };
   }
 
-  revalidatePath(`/vault/${note.vault_id}`);
+  revalidatePath(`/folder/${note.folder_id}`);
   revalidatePath(`/search`);
-  redirect(`/vault/${note.vault_id}`);
+  redirect(`/folder/${note.folder_id}`);
 
 }

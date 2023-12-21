@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     template: '%s | Wault',
     default: 'Wault',
   },
-  description: 'A vault for your notes, links and more.',
+  description: 'A folder for your notes, links and more.',
 }
 
 export default function RootLayout({

@@ -5,7 +5,7 @@ import Title from '@/components/Title';
 import Description from '@/components/Description';
 import Main from '@/components/Main';
 
-export default async function VaultLayout({ children, params }: {
+export default async function FolderLayout({ children, params }: {
   children: React.ReactNode,
   params: { id: string }
 }) {

@@ -1,7 +1,7 @@
 const { db } = require('@vercel/postgres');
 const {
   USERS,
-  VAULTS,
+  FOLDERS,
   NOTES,
 } = require('./placeholder.js');
 const bcrypt = require('bcrypt');
@@ -46,43 +46,43 @@ async function seedUsers(client) {
   }
 }
 
-async function seedVaults(client) {
+async function seedFolders(client) {
   try {
-    await client.sql`DROP TABLE IF EXISTS vaults;`;
+    await client.sql`DROP TABLE IF EXISTS folders;`;
     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
 
-    // Create the "vaults" table if it doesn't exist
+    // Create the "folders" table if it doesn't exist
     const createTable = await client.sql`
-    CREATE TABLE IF NOT EXISTS vaults (
+    CREATE TABLE IF NOT EXISTS folders (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     user_id UUID NOT NULL,
-    vault_id UUID,
+    folder_id UUID,
     title VARCHAR(255) NOT NULL,
     description VARCHAR(255)
   );
 `;
 
-    console.log(`Created "vaults" table`);
+    console.log(`Created "folders" table`);
 
-    // Insert data into the "vaults" table
-    const insertedVaults = await Promise.all(
-      VAULTS.map(
-        (vault) => client.sql`
-        INSERT INTO vaults (id, user_id, vault_id, title, description)
-        VALUES (${vault.id}, ${vault.user_id}, ${vault.vault_id}, ${vault.title}, ${vault.description})
+    // Insert data into the "folders" table
+    const insertedFolders = await Promise.all(
+      FOLDERS.map(
+        (folder) => client.sql`
+        INSERT INTO folders (id, user_id, folder_id, title, description)
+        VALUES (${folder.id}, ${folder.user_id}, ${folder.folder_id}, ${folder.title}, ${folder.description})
         ON CONFLICT (id) DO NOTHING;
       `,
       ),
     );
 
-    console.log(`Seeded ${insertedVaults.length} vaults`);
+    console.log(`Seeded ${insertedFolders.length} folders`);
 
     return {
       createTable,
-      vaults: insertedVaults,
+      folders: insertedFolders,
     };
   } catch (error) {
-    console.error('Error seeding vaults:', error);
+    console.error('Error seeding folders:', error);
     throw error;
   }
 }
@@ -101,7 +101,7 @@ async function seedNotes(client) {
         content TEXT,
         url TEXT,
         user_id UUID NOT NULL,
-        vault_id UUID NOT NULL
+        folder_id UUID
       );
     `;
 
@@ -111,8 +111,8 @@ async function seedNotes(client) {
     const insertedNotes = await Promise.all(
       NOTES.map(
         (note) => client.sql`
-        INSERT INTO notes (title, description, content, url, user_id, vault_id)
-        VALUES (${note.title}, ${note.description}, ${note.content}, ${note.url}, ${note.user_id}, ${note.vault_id})
+        INSERT INTO notes (title, description, content, url, user_id, folder_id)
+        VALUES (${note.title}, ${note.description}, ${note.content}, ${note.url}, ${note.user_id}, ${note.folder_id})
         ON CONFLICT (id) DO NOTHING;
       `,
       ),
@@ -134,7 +134,7 @@ async function main() {
   const client = await db.connect();
 
   await seedUsers(client);
-  await seedVaults(client);
+  await seedFolders(client);
   await seedNotes(client);
 
   await client.end();

@@ -1,5 +1,5 @@
 import Header from '@/components/Header';
-export default function VaultLayout({
+export default function FolderLayout({
   children,
 }: {
   children: React.ReactNode

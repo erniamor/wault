@@ -1,25 +1,25 @@
-import VaultCard from '@/components/vault/VaultCard';
+import FolderCard from '@/components/folder/FolderCard';
 import { Metadata } from 'next';
-import { fetchRootVaults } from '@/api/vault';
+import { fetchRootFolders } from '@/api/folder';
 import CreateMenu from '@/components/CreateMenu';
 import Main from '@/components/Main';
 
 export const metadata: Metadata = {
-  title: 'Vaults',
+  title: 'Folders',
 };
 
 export default async function Page() {
-  const vaults = await fetchRootVaults();
-  // TODO : add empty message if no vault found
+  const folders = await fetchRootFolders();
+  // TODO : add empty message if no folder found
   // TODO : make notes available at root level
   return (
     <Main>
       <div className="w-full flex flex-col gap-3 mb-16">
-        {vaults.map((vault) => (
-          <VaultCard key={vault.id} vault={vault} />
+        {folders.map((folder) => (
+          <FolderCard key={folder.id} folder={folder} />
         ))}
       </div>
-      <CreateMenu isNoteVisible={false} isLinkVisible={false} />
+      <CreateMenu />
     </Main>
   );
 }

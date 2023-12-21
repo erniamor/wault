@@ -18,7 +18,7 @@ export default function Home() {
         <div className='flex flex-row gap-3 mt-20'>
           <Button href="/login">Login</Button>
           <Button href="/login">Register</Button>
-          <Button href="/vault">Vault</Button>
+          <Button href="/folder">My Vault</Button>
         </div>
       </div>
     </main>

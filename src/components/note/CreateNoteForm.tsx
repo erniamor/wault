@@ -11,12 +11,12 @@ import FormSubmitButton from '../form/FormSubmitButton';
 import FormCancelButton from '../form/FormCancelButton';
 
 type FormProps = {
-  vaultId: string;
+  folderId: string;
 }
 
-export default function Form({ vaultId }: FormProps) {
+export default function Form({ folderId }: FormProps) {
   const initialState: State = { message: null, errors: {} };
-  const createNoteBinded = createNote.bind(null, vaultId);
+  const createNoteBinded = createNote.bind(null, folderId);
   const [state, dispatch] = useFormState(createNoteBinded, initialState);
   return (
     <form action={dispatch}>
@@ -27,7 +27,7 @@ export default function Form({ vaultId }: FormProps) {
         <Input name="url" label="Url" errors={state.errors?.url} />
       </FormFields>
       <FormButtons>
-        <FormCancelButton href={`/vault/${vaultId}`}>Cancel</FormCancelButton>
+        <FormCancelButton href={`/folder/${folderId}`}>Cancel</FormCancelButton>
         <FormSubmitButton>Create Note</FormSubmitButton>
       </FormButtons>
       <FormError message={state.message} />

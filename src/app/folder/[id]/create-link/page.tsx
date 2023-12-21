@@ -5,5 +5,5 @@ export const metadata: Metadata = {
 };
 
 export default async function Page({ params }: { params: { id: string } }) {
-  return <CreateNoteFormFromUrl vaultId={params.id} />
+  return <CreateNoteFormFromUrl folderId={params.id} />
 }
