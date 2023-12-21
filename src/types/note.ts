@@ -5,6 +5,6 @@ export type Note = {
   description?: string;
   content?: string;
   url?: string;
-  folder_id: string;
+  folder_id?: string;
   user_id: string;
 }

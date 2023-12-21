@@ -8,7 +8,7 @@ import MenuLink from '@/components/MenuLink';
 export default function NoteMenu({ note }: { note: Note }) {
   return <div className='absolute top-0 left-0 w-full flex flex-row justify-between'>
     <div>
-      <MenuLink href={`/folder/${note.folder_id}`}>
+      <MenuLink href={`/folder${note.folder_id ? `/${note.folder_id}` : ''}`}>
         <CiTurnL1 />
       </MenuLink>
     </div>

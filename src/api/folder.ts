@@ -113,7 +113,6 @@ export async function createFolder(folderId: string | null, prevState: State, fo
   }
 
   revalidatePath(`/folder${folderId ? `/${folderId}` : ''}`);
-  revalidatePath(`/search`);
   redirect(`/folder/${insertedId}`);
 }
 
@@ -157,7 +156,6 @@ export async function updateFolder(folder: Folder, prevState: State, formData: F
 
   revalidatePath(`/folder/${folder.id}`);
   revalidatePath(`/folder${folder.folder_id ? `/${folder.folder_id}` : ''}`);
-  revalidatePath(`/search`);
   redirect(`/folder/${folder.id}`);
 
 }
@@ -171,7 +169,6 @@ export async function deleteFolder(folder: Folder) {
   }
 
   revalidatePath(`/folder${folder.folder_id ? `/${folder.folder_id}` : ''}`);
-  revalidatePath(`/search`);
   redirect(`/folder${folder.folder_id ? `/${folder.folder_id}` : ''}`);
 
 }

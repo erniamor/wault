@@ -51,6 +51,20 @@ export async function searchNotesTotalPage(query: string) {
   }
 }
 
+export async function fetchRootNotes() {
+  noStore();
+  try {
+    const notes = await sql<Note>`
+      SELECT * FROM notes
+      WHERE folder_id IS NULL
+    `;
+    return notes.rows;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch root notes.');
+  }
+}
+
 export async function fetchNotesByFolderId(id: string) {
   noStore();
   try {
@@ -114,7 +128,7 @@ export type State = {
   message?: string | null;
 };
 
-export async function createNote(folderId: string, prevState: State, formData: FormData) {
+export async function createNote(folderId: string | null, prevState: State, formData: FormData) {
 
   // Validate form fields using Zod
   const validatedFields = CreateNote.safeParse({
@@ -153,7 +167,7 @@ export async function createNote(folderId: string, prevState: State, formData: F
     };
   }
 
-  revalidatePath(`/folder/${folderId}`);
+  revalidatePath(`/folder${folderId ? `/${folderId}` : ''}`);
   revalidatePath(`/search`);
   redirect(`/note/${insertedId}`);
 }
@@ -172,7 +186,7 @@ const UrlFormSchema = z.object({
     .max(2000, { message: "Url must be less than 2000 characters." })
 });
 
-export async function createNoteFromUrl(folderId: string, prevState: UrlState, formData: FormData) {
+export async function createNoteFromUrl(folderId: string | null, prevState: UrlState, formData: FormData) {
 
   // Validate form fields using Zod
   const validatedFields = UrlFormSchema.safeParse({
@@ -236,7 +250,7 @@ export async function createNoteFromUrl(folderId: string, prevState: UrlState, f
     };
   }
 
-  revalidatePath(`/folder/${folderId}`);
+  revalidatePath(`/folder${folderId ? `/${folderId}` : ''}`);
   revalidatePath(`/search`);
   redirect(`/note/${insertedId}`);
 }
@@ -287,8 +301,6 @@ export async function updateNote(note: Note, prevState: State, formData: FormDat
 
 }
 
-
-
 export async function deleteNote(note: Note) {
 
   try {
@@ -297,8 +309,8 @@ export async function deleteNote(note: Note) {
     return { message: 'Database Error: Failed to Delete Note.' };
   }
 
-  revalidatePath(`/folder/${note.folder_id}`);
+  revalidatePath(`/folder${note.folder_id ? `/${note.folder_id}` : ''}`);
   revalidatePath(`/search`);
-  redirect(`/folder/${note.folder_id}`);
+  redirect(`/folder${note.folder_id ? `/${note.folder_id}` : ''}`);
 
 }
