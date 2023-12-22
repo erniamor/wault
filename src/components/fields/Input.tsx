@@ -28,7 +28,7 @@ export default function Input({
       placeholder={placeholder}
       disabled={disabled}
       aria-describedby={`${id}-error`}
-      className="peer block w-full rounded-md border border-gray-200 py-2 pl-2 text-sm outline-2 placeholder:text-gray-500 disabled:cursor-not-allowed disabled:opacity-50"
+      className="peer block w-full rounded-md border border-gray-200 py-2 pl-2 text-sm text-gray-900 outline-2 placeholder:text-gray-500 disabled:cursor-not-allowed disabled:opacity-50"
     />
   </Field>
 }

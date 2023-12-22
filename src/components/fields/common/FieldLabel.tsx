@@ -3,7 +3,7 @@ export type FieldLabelProps = {
   id: string
 }
 export default function FieldLabel({ label, id }: FieldLabelProps) {
-  return label ? <label htmlFor={id} className="mb-2 block text-sm font-medium">
+  return label ? <label htmlFor={id} className="mb-2 block text-sm font-medium text-black">
     {label}
   </label> : null;
 }
