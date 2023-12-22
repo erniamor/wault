@@ -15,7 +15,7 @@ export default async function Page() {
     <div className="mb-5">
       <Title>Profile</Title>
     </div>
-    <div className="rounded-md bg-gray-50 p-4">
+    <div className="rounded-md bg-gray-50 text-black p-4">
 
       {session
         ? <div>

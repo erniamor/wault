@@ -27,7 +27,7 @@ export default function Form({ folder }: { folder: Folder }) {
   return (
     <form onSubmit={handleSubmit}>
       <FormFields>
-        Are you sure you want to delete this folder and all of its children?
+        <p className="text-black">Are you sure you want to delete this folder and all of its children?</p>
       </FormFields>
       <FormButtons>
         <Button href={`/folder/${folder.id}`} disabled={pending}>Cancel</Button>

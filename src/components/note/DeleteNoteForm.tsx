@@ -27,7 +27,7 @@ export default function Form({ note }: { note: Note }) {
   return (
     <form onSubmit={handleSubmit}>
       <FormFields>
-        Are you sure you want to delete this note?
+        <p className="text-black">Are you sure you want to delete this note?</p>
       </FormFields>
       <FormButtons>
         <Button href={`/note/${note.id}`} disabled={pending}>Cancel</Button>
