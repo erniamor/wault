@@ -12,3 +12,4 @@
 - add change user name
 - add change user email
 - add account deletion
+- add pwa
