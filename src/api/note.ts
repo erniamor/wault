@@ -6,22 +6,34 @@ import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { unstable_noStore as noStore } from 'next/cache';
-import { USERS } from '../../scripts/placeholder';
 import * as cheerio from 'cheerio';
+import { auth } from "../auth"
 
 const ITEMS_PER_PAGE = 12;
 export async function searchNotes(query: string, currentPage: number) {
   noStore();
+
+  const session = await auth()
+  if (!session) {
+    redirect("/auth/login")
+  }
+
+  const userId = session.user?.id;
+  if (!userId) {
+    throw new Error('Authentication Error: User not found.');
+  }
+
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
   try {
     const notes = await sql<Note>`
     SELECT *
     FROM notes
     WHERE
-      notes.title::text ILIKE ${`%${query}%`} OR
+      notes.user_id = ${userId} AND
+      (notes.title::text ILIKE ${`%${query}%`} OR
       notes.description::text ILIKE ${`%${query}%`} OR
       notes.content::text ILIKE ${`%${query}%`} OR
-      notes.url ILIKE ${`%${query}%`}
+      notes.url ILIKE ${`%${query}%`})
     ORDER BY notes.title ASC
     LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
     `;
@@ -33,14 +45,26 @@ export async function searchNotes(query: string, currentPage: number) {
 }
 export async function searchNotesTotalPage(query: string) {
   noStore();
+
+  const session = await auth()
+  if (!session) {
+    redirect("/auth/login")
+  }
+
+  const userId = session.user?.id;
+  if (!userId) {
+    throw new Error('Authentication Error: User not found.');
+  }
+
   try {
     const count = await sql`SELECT COUNT(*)
     FROM notes
     WHERE
-      notes.title::text ILIKE ${`%${query}%`} OR
+      notes.user_id = ${userId} AND
+      (notes.title::text ILIKE ${`%${query}%`} OR
       notes.description::text ILIKE ${`%${query}%`} OR
       notes.content::text ILIKE ${`%${query}%`} OR
-      notes.url ILIKE ${`%${query}%`}
+      notes.url ILIKE ${`%${query}%`})
   `;
 
     const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
@@ -53,10 +77,21 @@ export async function searchNotesTotalPage(query: string) {
 
 export async function fetchRootNotes() {
   noStore();
+
+  const session = await auth()
+  if (!session) {
+    redirect("/auth/login")
+  }
+
+  const userId = session.user?.id;
+  if (!userId) {
+    throw new Error('Authentication Error: User not found.');
+  }
+
   try {
     const notes = await sql<Note>`
       SELECT * FROM notes
-      WHERE folder_id IS NULL
+      WHERE folder_id IS NULL AND user_id = ${userId}
     `;
     return notes.rows;
   } catch (error) {
@@ -67,10 +102,21 @@ export async function fetchRootNotes() {
 
 export async function fetchNotesByFolderId(id: string) {
   noStore();
+
+  const session = await auth()
+  if (!session) {
+    redirect("/auth/login")
+  }
+
+  const userId = session.user?.id;
+  if (!userId) {
+    throw new Error('Authentication Error: User not found.');
+  }
+
   try {
     const notes = await sql<Note>`
       SELECT * FROM notes
-      WHERE folder_id = ${id}
+      WHERE folder_id = ${id} AND user_id = ${userId}
     `;
     return notes.rows;
   } catch (error) {
@@ -80,10 +126,21 @@ export async function fetchNotesByFolderId(id: string) {
 }
 export async function fetchNoteById(id: string) {
   noStore();
+
+  const session = await auth()
+  if (!session) {
+    redirect("/auth/login")
+  }
+
+  const userId = session.user?.id;
+  if (!userId) {
+    throw new Error('Authentication Error: User not found.');
+  }
+
   try {
     const notes = await sql<Note>`
       SELECT * FROM notes
-      WHERE id = ${id}
+      WHERE id = ${id} AND user_id = ${userId}
     `;
     return notes.rows[0];
   } catch (error) {
@@ -130,6 +187,16 @@ export type State = {
 
 export async function createNote(folderId: string | null, prevState: State, formData: FormData) {
 
+  const session = await auth()
+  if (!session) {
+    redirect("/auth/login")
+  }
+
+  const userId = session.user?.id;
+  if (!userId) {
+    return { message: 'Authentication Error: User not found.' };
+  }
+
   // Validate form fields using Zod
   const validatedFields = CreateNote.safeParse({
     title: formData.get('title'),
@@ -148,7 +215,6 @@ export async function createNote(folderId: string | null, prevState: State, form
 
   // Prepare data for insertion into the database
   const { title, description, content, url } = validatedFields.data;
-  const userId = USERS[0].id;
   // const date = new Date().toISOString().split('T')[0];
 
   let insertedId: string;
@@ -188,6 +254,16 @@ const UrlFormSchema = z.object({
 
 export async function createNoteFromUrl(folderId: string | null, prevState: UrlState, formData: FormData) {
 
+  const session = await auth()
+  if (!session) {
+    redirect("/auth/login")
+  }
+
+  const userId = session.user?.id;
+  if (!userId) {
+    return { message: 'Authentication Error: User not found.' };
+  }
+
   // Validate form fields using Zod
   const validatedFields = UrlFormSchema.safeParse({
     url: formData.get('url'),
@@ -203,7 +279,6 @@ export async function createNoteFromUrl(folderId: string | null, prevState: UrlS
 
   // Prepare data for insertion into the database
   const { url } = validatedFields.data;
-  const userId = USERS[0].id;
   // const date = new Date().toISOString().split('T')[0];
 
   const fetchResult = await fetch(url as string)
@@ -261,6 +336,16 @@ const UpdateNote = NoteFormSchema.omit({ id: true/* , date: true */ });
 
 export async function updateNote(note: Note, prevState: State, formData: FormData) {
 
+  const session = await auth()
+  if (!session) {
+    redirect("/auth/login")
+  }
+
+  const userId = session.user?.id;
+  if (!userId) {
+    return { message: 'Authentication Error: User not found.' };
+  }
+
   // Validate form fields using Zod
   const validatedFields = UpdateNote.safeParse({
     title: formData.get('title'),
@@ -279,14 +364,13 @@ export async function updateNote(note: Note, prevState: State, formData: FormDat
 
   // Prepare data for insertion into the database
   const { title, description, content, url } = validatedFields.data;
-  const userId = USERS[0].id;
   // const date = new Date().toISOString().split('T')[0];
 
   try {
     await sql`
       UPDATE notes
       SET title = ${title}, description = ${description}, content = ${content}, url = ${url}
-      WHERE id = ${note.id}
+      WHERE id = ${note.id} AND user_id = ${userId}
     `;
   } catch (error) {
     return {
@@ -303,8 +387,18 @@ export async function updateNote(note: Note, prevState: State, formData: FormDat
 
 export async function deleteNote(note: Note) {
 
+  const session = await auth()
+  if (!session) {
+    redirect("/auth/login")
+  }
+
+  const userId = session.user?.id;
+  if (!userId) {
+    return { message: 'Authentication Error: User not found.' };
+  }
+
   try {
-    await sql`DELETE FROM notes WHERE id = ${note.id}`;
+    await sql`DELETE FROM notes WHERE id = ${note.id} AND user_id = ${userId}`;
   } catch (error) {
     return { message: 'Database Error: Failed to Delete Note.' };
   }
