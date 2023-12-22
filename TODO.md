@@ -1,0 +1,14 @@
+- update readme
+- add not-found for folder and note page
+- add folder and note date
+- add change folder or note hierarchy
+- add expanded folders view
+- update page title dynamicaly
+- add toaster
+- add mailer
+- add verify email
+- add forgot password
+- add reset password
+- add change user name
+- add change user email
+- add account deletion
