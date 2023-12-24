@@ -5,7 +5,7 @@ import { HiOutlineDocumentText } from "react-icons/hi";
 
 export default function NoteCard({ note }: { note: Note }) {
   return (
-    <Link href={`/note/${note.id}`} className="w-full p-4 bg-gray-100 rounded flex flex-row gap-2 items-top text-black">
+    <Link href={`/note/${note.id}`} className="w-full px-4 py-3 bg-gray-100 rounded flex flex-row gap-2 items-top text-black">
       <div className='pt-1'>
         {note.url ? <FaLink /> : <HiOutlineDocumentText />}
       </div>
