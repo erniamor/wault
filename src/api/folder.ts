@@ -7,7 +7,6 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { unstable_noStore as noStore } from 'next/cache';
 import { auth } from "../auth"
-import { convertFoldersToTree } from '../utils/convertFoldersToTree';
 
 export async function fetchRootFolders() {
   noStore();
@@ -33,7 +32,7 @@ export async function fetchRootFolders() {
     throw new Error('Failed to fetch root folders.');
   }
 }
-export async function fetchTreeFolders() {
+export async function fetchFolders() {
   noStore();
 
   const session = await auth()
@@ -51,7 +50,7 @@ export async function fetchTreeFolders() {
       SELECT * FROM folders
       WHERE user_id = ${userId}
     `;
-    return convertFoldersToTree(folders.rows);
+    return folders.rows;
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch root folders.');
@@ -120,16 +119,20 @@ const FolderFormSchema = z.object({
   description: z.string()
     .max(255, { message: "Description must be less than 255 characters." })
     .optional(),
+  folder_id: z.string({
+    invalid_type_error: 'Please select a folder.',
+  }),
   // date: z.string(),
 });
 
-const CreateFolder = FolderFormSchema.omit({ id: true/* , date: true */ });
+const CreateFolder = FolderFormSchema.omit({ id: true, folder_id: true /* , date: true */ });
 
 // This is temporary until @types/react-dom is updated
 export type State = {
   errors?: {
     title?: string[];
     description?: string[];
+    folder_id?: string[];
   };
   message?: string | null;
 };
@@ -204,6 +207,7 @@ export async function updateFolder(folder: Folder, prevState: State, formData: F
   const validatedFields = UpdateFolder.safeParse({
     title: formData.get('title'),
     description: formData.get('description'),
+    folder_id: formData.get('folder_id'),
   });
 
   // If form validation fails, return errors early. Otherwise, continue.
@@ -215,13 +219,14 @@ export async function updateFolder(folder: Folder, prevState: State, formData: F
   }
 
   // Prepare data for insertion into the database
-  const { title, description } = validatedFields.data;
+  const { title, description, folder_id } = validatedFields.data;
+  const folderOrNull = folder_id === 'null' ? null : folder_id;
   // const date = new Date().toISOString().split('T')[0];
 
   try {
     await sql`
       UPDATE folders
-      SET title = ${title}, description = ${description}
+      SET title = ${title}, description = ${description}, folder_id = ${folderOrNull}
       WHERE id = ${folder.id} AND user_id = ${userId}
     `;
   } catch (error) {
@@ -232,6 +237,7 @@ export async function updateFolder(folder: Folder, prevState: State, formData: F
 
   revalidatePath(`/folder/${folder.id}`);
   revalidatePath(`/folder${folder.folder_id ? `/${folder.folder_id}` : ''}`);
+  revalidatePath(`/folder${folderOrNull ? `/${folderOrNull}` : ''}`);
   redirect(`/folder/${folder.id}`);
 
 }

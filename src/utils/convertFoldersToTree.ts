@@ -9,7 +9,5 @@ function addChildrenToFolder(folder: Folder, folders: Folder[]): FolderWithChild
   const children = folders
     .filter(currentFolder => currentFolder.folder_id === folder.id)
     .map(currentFolder => addChildrenToFolder(currentFolder, folders));
-  console.log(folder.title, children);
-
   return { ...folder, children };
 }
