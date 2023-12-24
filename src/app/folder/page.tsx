@@ -8,6 +8,7 @@ import NoteCard from '@/components/note/NoteCard';
 import FolderEmpty from '@/components/folder/FolderEmpty';
 import Title from '@/components/Title';
 import RootMenu from '@/components/folder/RootMenu';
+import List from '@/components/List';
 
 export const metadata: Metadata = {
   title: 'Vault',
@@ -24,14 +25,14 @@ export default async function Page() {
       <div className="pt-5 mb-5">
         <Title>Root</Title>
       </div>
-      {folders.length + notes.length > 0 ? <div className="w-full flex flex-col gap-3 mb-16">
+      {folders.length + notes.length > 0 ? <List>
         {folders.map((folder) => (
           <FolderCard key={folder.id} folder={folder} />
         ))}
         {notes.map((note) => (
           <NoteCard key={note.id} note={note} />
         ))}
-      </div> : <FolderEmpty message='Your vault is currently empty' />}
+      </List> : <FolderEmpty message='Your vault is currently empty' />}
       <CreateMenu />
     </Main>
   );

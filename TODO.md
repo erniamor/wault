@@ -1,7 +1,6 @@
 - update readme
 - add not-found for folder and note page
 - add folder and note date
-- add change folder or note hierarchy
 - update page title dynamicaly
 - add toaster
 - add mailer
@@ -12,5 +11,5 @@
 - add change user email
 - add account deletion
 - add pwa
-- add change order
+- change folder and note list order
 - add animations between folders

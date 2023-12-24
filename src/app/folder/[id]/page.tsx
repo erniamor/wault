@@ -5,6 +5,7 @@ import FolderCard from '@/components/folder/FolderCard';
 import NoteCard from '@/components/note/NoteCard';
 import CreateMenu from '@/components/CreateMenu';
 import FolderEmpty from '@/components/folder/FolderEmpty';
+import List from '@/components/List';
 
 export const metadata: Metadata = {
   title: 'Folder',
@@ -15,14 +16,14 @@ export default async function Page({ params }: { params: { id: string } }) {
   const folders = await fetchFoldersByFolderId(id);
   const notes = await fetchNotesByFolderId(id);
   return <>
-    {folders.length + notes.length > 0 ? <div className="w-full flex flex-col gap-3 mb-16">
+    {folders.length + notes.length > 0 ? <List>
       {folders.map((folder) => (
         <FolderCard key={folder.id} folder={folder} />
       ))}
       {notes.map((note) => (
         <NoteCard key={note.id} note={note} />
       ))}
-    </div> : <FolderEmpty folderId={id} />}
+    </List> : <FolderEmpty folderId={id} />}
     <CreateMenu folderId={id} />
   </>
 }
