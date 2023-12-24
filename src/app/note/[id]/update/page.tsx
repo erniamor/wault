@@ -1,7 +1,9 @@
+import { fetchFolders } from '@/api/folder';
 import { fetchNoteById } from '@/api/note';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import UpdateNoteForm from '@/components/note/UpdateNoteForm';
+import { convertFoldersForOptions } from '@/utils/convertFoldersForOptions';
 
 export const metadata: Metadata = {
   title: 'Update a Note',
@@ -10,10 +12,12 @@ export const metadata: Metadata = {
 export default async function Page({ params }: { params: { id: string } }) {
   const id = params.id;
   const note = await fetchNoteById(id);
+  const folders = await fetchFolders();
+  const foldersForOptions = convertFoldersForOptions(folders);
   if (!note) {
     notFound();
   }
   return (
-    <UpdateNoteForm note={note} />
+    <UpdateNoteForm note={note} folders={foldersForOptions} />
   );
 }

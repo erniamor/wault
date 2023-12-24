@@ -169,10 +169,13 @@ const NoteFormSchema = z.object({
     .max(2000, { message: "Url must be less than 2000 characters." })
     .optional()
     .or(z.literal('')),
+  folder_id: z.string({
+    invalid_type_error: 'Please select a folder.',
+  }),
   // date: z.string(),
 });
 
-const CreateNote = NoteFormSchema.omit({ id: true/* , date: true */ });
+const CreateNote = NoteFormSchema.omit({ id: true, folder_id: true /* , date: true */ });
 
 // This is temporary until @types/react-dom is updated
 export type State = {
@@ -181,6 +184,7 @@ export type State = {
     description?: string[];
     content?: string[];
     url?: string[];
+    folder_id?: string[];
   };
   message?: string | null;
 };
@@ -352,6 +356,7 @@ export async function updateNote(note: Note, prevState: State, formData: FormDat
     description: formData.get('description'),
     content: formData.get('content'),
     url: formData.get('url'),
+    folder_id: formData.get('folder_id'),
   });
 
   // If form validation fails, return errors early. Otherwise, continue.
@@ -363,13 +368,14 @@ export async function updateNote(note: Note, prevState: State, formData: FormDat
   }
 
   // Prepare data for insertion into the database
-  const { title, description, content, url } = validatedFields.data;
+  const { title, description, content, url, folder_id } = validatedFields.data;
+  const folderOrNull = folder_id === 'null' ? null : folder_id;
   // const date = new Date().toISOString().split('T')[0];
 
   try {
     await sql`
       UPDATE notes
-      SET title = ${title}, description = ${description}, content = ${content}, url = ${url}
+      SET title = ${title}, description = ${description}, content = ${content}, url = ${url}, folder_id = ${folderOrNull}
       WHERE id = ${note.id} AND user_id = ${userId}
     `;
   } catch (error) {
@@ -380,6 +386,7 @@ export async function updateNote(note: Note, prevState: State, formData: FormDat
 
   revalidatePath(`/note/${note.id}`);
   revalidatePath(`/folder${note.folder_id ? `/${note.folder_id}` : ''}`);
+  revalidatePath(`/folder${folderOrNull ? `/${folderOrNull}` : ''}`);
   revalidatePath(`/search`);
   redirect(`/note/${note.id}`);
 
