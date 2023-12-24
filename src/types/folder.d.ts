@@ -6,3 +6,7 @@ export type Folder = {
   folder_id?: string;
   user_id: string;
 }
+
+export interface FolderWithChildren extends Folder {
+  children: FolderWithChildren[];
+}

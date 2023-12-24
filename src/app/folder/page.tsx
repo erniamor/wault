@@ -6,6 +6,8 @@ import Main from '@/components/Main';
 import FolderCard from '@/components/folder/FolderCard';
 import NoteCard from '@/components/note/NoteCard';
 import FolderEmpty from '@/components/folder/FolderEmpty';
+import Title from '@/components/Title';
+import RootMenu from '@/components/folder/RootMenu';
 
 export const metadata: Metadata = {
   title: 'Vault',
@@ -16,6 +18,12 @@ export default async function Page() {
   const notes = await fetchRootNotes();
   return (
     <Main>
+      <div className="relative -mt-5">
+        <RootMenu />
+      </div>
+      <div className="pt-5 mb-5">
+        <Title>Root</Title>
+      </div>
       {folders.length + notes.length > 0 ? <div className="w-full flex flex-col gap-3 mb-16">
         {folders.map((folder) => (
           <FolderCard key={folder.id} folder={folder} />

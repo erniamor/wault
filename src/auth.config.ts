@@ -1,6 +1,6 @@
 import type { NextAuthConfig } from 'next-auth';
 
-const RESTRICTED_PAGES = ['folder', 'note', 'search', 'profile'];
+const RESTRICTED_PAGES = ['folder', 'tree', 'note', 'search', 'profile'];
 
 export const authConfig = {
   pages: {

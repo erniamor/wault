@@ -5,15 +5,7 @@
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 31, 41, 55;
-  --background-end-rgb: 200, 200, 200;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 200, 200, 200;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+  --background-end-rgb: 150, 150, 160;
 }
 
 body {

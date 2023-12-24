@@ -1,5 +1,3 @@
-'use client';
-
 import type { Folder } from '@/types/folder';
 import { CiTurnL1, CiMenuBurger, CiEdit, CiTrash } from "react-icons/ci";
 import MenuLink from '@/components/MenuLink';

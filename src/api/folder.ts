@@ -7,6 +7,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { unstable_noStore as noStore } from 'next/cache';
 import { auth } from "../auth"
+import { convertFoldersToTree } from '../utils/convertFoldersToTree';
 
 export async function fetchRootFolders() {
   noStore();
@@ -27,6 +28,30 @@ export async function fetchRootFolders() {
       WHERE folder_id IS NULL AND user_id = ${userId}
     `;
     return folders.rows;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch root folders.');
+  }
+}
+export async function fetchTreeFolders() {
+  noStore();
+
+  const session = await auth()
+  if (!session) {
+    redirect("/auth/login")
+  }
+
+  const userId = session.user?.id;
+  if (!userId) {
+    throw new Error('Authentication Error: User not found.');
+  }
+
+  try {
+    const folders = await sql<Folder>`
+      SELECT * FROM folders
+      WHERE user_id = ${userId}
+    `;
+    return convertFoldersToTree(folders.rows);
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch root folders.');
