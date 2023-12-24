@@ -1,6 +1,6 @@
 'use client';
 
-import { State, createFolder } from '@/api/folder';
+import { CreateState, createFolder } from '@/api/folder';
 import { useFormState } from 'react-dom';
 import Input from '../fields/Input';
 import TextArea from '../fields/TextArea';
@@ -15,7 +15,7 @@ type FormProps = {
 }
 
 export default function Form({ folderId }: FormProps) {
-  const initialState: State = { message: null, errors: {} };
+  const initialState: CreateState = { message: null, errors: {} };
   const createFolderBinded = createFolder.bind(null, folderId || null);
   const [state, dispatch] = useFormState(createFolderBinded, initialState);
   return (

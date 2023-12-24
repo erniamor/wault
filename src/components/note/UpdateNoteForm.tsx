@@ -2,7 +2,7 @@
 
 import type { Note } from '@/types/note';
 import type { Folder } from '@/types/folder';
-import { State, updateNote } from '@/api/note';
+import { UpdateState, updateNote } from '@/api/note';
 import { useFormState } from 'react-dom';
 import Input from '../fields/Input';
 import TextArea from '../fields/TextArea';
@@ -19,7 +19,7 @@ type FormProps = {
 }
 
 export default function Form({ note, folders }: FormProps) {
-  const initialState: State = { message: null, errors: {} };
+  const initialState: UpdateState = { message: null, errors: {} };
   const updateNoteBinded = updateNote.bind(null, note);
   const [state, dispatch] = useFormState(updateNoteBinded, initialState);
   const folderOptions = folders.map((folder) => ({ value: folder.id, label: folder.title }));

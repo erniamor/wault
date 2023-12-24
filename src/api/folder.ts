@@ -128,16 +128,15 @@ const FolderFormSchema = z.object({
 const CreateFolder = FolderFormSchema.omit({ id: true, folder_id: true /* , date: true */ });
 
 // This is temporary until @types/react-dom is updated
-export type State = {
+export type CreateState = {
   errors?: {
     title?: string[];
     description?: string[];
-    folder_id?: string[];
   };
   message?: string | null;
 };
 
-export async function createFolder(folderId: string | null, prevState: State, formData: FormData) {
+export async function createFolder(folderId: string | null, prevState: CreateState, formData: FormData) {
 
   const session = await auth()
   if (!session) {
@@ -181,7 +180,6 @@ export async function createFolder(folderId: string | null, prevState: State, fo
       message: 'Database Error: Failed to Create Folder.',
     };
   }
-
   revalidatePath(`/folder${folderId ? `/${folderId}` : ''}`);
   redirect(`/folder/${insertedId}`);
 }
@@ -191,7 +189,16 @@ export async function createFolder(folderId: string | null, prevState: State, fo
 // Use Zod to update the expected types
 const UpdateFolder = FolderFormSchema.omit({ id: true/* , date: true */ });
 
-export async function updateFolder(folder: Folder, prevState: State, formData: FormData) {
+export type UpdateState = {
+  errors?: {
+    title?: string[];
+    description?: string[];
+    folder_id?: string[];
+  };
+  message?: string | null;
+};
+
+export async function updateFolder(folder: Folder, prevState: UpdateState, formData: FormData) {
 
   const session = await auth()
   if (!session) {

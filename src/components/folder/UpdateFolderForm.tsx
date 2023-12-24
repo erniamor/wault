@@ -1,7 +1,7 @@
 'use client';
 
 import type { Folder } from '@/types/folder';
-import { State, updateFolder } from '@/api/folder';
+import { UpdateState, updateFolder } from '@/api/folder';
 import { useFormState } from 'react-dom';
 import Input from '../fields/Input';
 import TextArea from '../fields/TextArea';
@@ -18,7 +18,7 @@ type FormProps = {
 }
 
 export default function Form({ folder, folders }: FormProps) {
-  const initialState: State = { message: null, errors: {} };
+  const initialState: UpdateState = { message: null, errors: {} };
   const updateFolderBinded = updateFolder.bind(null, folder);
   const [state, dispatch] = useFormState(updateFolderBinded, initialState);
   const folderOptions = folders.map((folder) => ({ value: folder.id, label: folder.title }));

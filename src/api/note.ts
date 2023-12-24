@@ -178,18 +178,17 @@ const NoteFormSchema = z.object({
 const CreateNote = NoteFormSchema.omit({ id: true, folder_id: true /* , date: true */ });
 
 // This is temporary until @types/react-dom is updated
-export type State = {
+export type CreateState = {
   errors?: {
     title?: string[];
     description?: string[];
     content?: string[];
     url?: string[];
-    folder_id?: string[];
   };
   message?: string | null;
 };
 
-export async function createNote(folderId: string | null, prevState: State, formData: FormData) {
+export async function createNote(folderId: string | null, prevState: CreateState, formData: FormData) {
 
   const session = await auth()
   if (!session) {
@@ -337,8 +336,17 @@ export async function createNoteFromUrl(folderId: string | null, prevState: UrlS
 
 // Use Zod to update the expected types
 const UpdateNote = NoteFormSchema.omit({ id: true/* , date: true */ });
-
-export async function updateNote(note: Note, prevState: State, formData: FormData) {
+export type UpdateState = {
+  errors?: {
+    title?: string[];
+    description?: string[];
+    content?: string[];
+    url?: string[];
+    folder_id?: string[];
+  };
+  message?: string | null;
+};
+export async function updateNote(note: Note, prevState: UpdateState, formData: FormData) {
 
   const session = await auth()
   if (!session) {
