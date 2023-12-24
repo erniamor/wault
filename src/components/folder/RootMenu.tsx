@@ -1,4 +1,3 @@
-import type { Folder } from '@/types/folder';
 import { LuFolderTree } from "react-icons/lu";
 import MenuLink from '@/components/MenuLink';
 

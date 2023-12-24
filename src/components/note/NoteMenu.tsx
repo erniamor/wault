@@ -2,12 +2,16 @@
 
 import type { Note } from '@/types/note';
 import { CiTurnL1, CiEdit, CiTrash } from "react-icons/ci";
+import { LuFolderTree } from "react-icons/lu";
 import { FaRegEye } from "react-icons/fa";
 import MenuLink from '@/components/MenuLink';
 
 export default function NoteMenu({ note }: { note: Note }) {
   return <div className='absolute top-0 left-0 w-full flex flex-row justify-between'>
-    <div>
+    <div className='flex flex-row items-start gap-2'>
+      <MenuLink href={`/tree`}>
+        <LuFolderTree />
+      </MenuLink>
       <MenuLink href={`/folder${note.folder_id ? `/${note.folder_id}` : ''}`}>
         <CiTurnL1 />
       </MenuLink>

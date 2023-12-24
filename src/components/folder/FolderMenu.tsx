@@ -1,10 +1,14 @@
 import type { Folder } from '@/types/folder';
 import { CiTurnL1, CiMenuBurger, CiEdit, CiTrash } from "react-icons/ci";
+import { LuFolderTree } from "react-icons/lu";
 import MenuLink from '@/components/MenuLink';
 
 export default function FolderMenu({ folder }: { folder: Folder }) {
   return <div className='absolute top-0 left-0 w-full flex flex-row justify-between'>
-    <div>
+    <div className='flex flex-row items-start gap-2'>
+      <MenuLink href={`/tree`}>
+        <LuFolderTree />
+      </MenuLink>
       <MenuLink href={`/folder${folder.folder_id ? `/${folder.folder_id}` : ''}`}>
         <CiTurnL1 />
       </MenuLink>
