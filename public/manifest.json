@@ -11,62 +11,74 @@
     {
       "src": "/wault-16.png",
       "type": "image/png",
-      "sizes": "16x16"
+      "sizes": "16x16",
+      "purpose": "maskable"
     },
     {
       "src": "/wault-48.png",
       "type": "image/png",
-      "sizes": "48x48"
+      "sizes": "48x48",
+      "purpose": "maskable"
     },
     {
       "src": "/wault-64.png",
       "type": "image/png",
-      "sizes": "64x64"
+      "sizes": "64x64",
+      "purpose": "maskable"
     },
     {
       "src": "/wault-72.png",
       "type": "image/png",
-      "sizes": "72x72"
+      "sizes": "72x72",
+      "purpose": "maskable"
     },
     {
       "src": "/wault-96.png",
       "type": "image/png",
-      "sizes": "96x96"
+      "sizes": "96x96",
+      "purpose": "maskable"
     },
     {
       "src": "/wault-128.png",
       "type": "image/png",
-      "sizes": "128x128"
+      "sizes": "128x128",
+      "purpose": "maskable"
     },
     {
       "src": "/wault-144.png",
       "type": "image/png",
-      "sizes": "144x144"
+      "sizes": "144x144",
+      "purpose": "maskable"
     },
     {
       "src": "/wault-152.png",
       "type": "image/png",
-      "sizes": "152x152"
+      "sizes": "152x152",
+      "purpose": "maskable"
     },
     {
       "src": "/wault-180.png",
       "type": "image/png",
-      "sizes": "180x180"
+      "sizes": "180x180",
+      "purpose": "maskable"
     },
     {
       "src": "/wault-192.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "192x192",
+      "purpose": "maskable"
     },
     {
       "src": "/wault-256.png",
       "type": "image/png",
-      "sizes": "256x256"
+      "sizes": "256x256",
+      "purpose": "maskable"
     },
     {
       "src": "/wault-512.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "512x512",
+      "purpose": "maskable"
     }
   ]
 }
