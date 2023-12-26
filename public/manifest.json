@@ -1,0 +1,72 @@
+{
+  "name": "Wault",
+  "short_name": "Wault",
+  "theme_color": "#ffffff",
+  "background_color": "#1f2937",
+  "display": "fullscreen",
+  "orientation": "any",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/wault-16.png",
+      "type": "image/png",
+      "sizes": "16x16"
+    },
+    {
+      "src": "/wault-48.png",
+      "type": "image/png",
+      "sizes": "48x48"
+    },
+    {
+      "src": "/wault-64.png",
+      "type": "image/png",
+      "sizes": "64x64"
+    },
+    {
+      "src": "/wault-72.png",
+      "type": "image/png",
+      "sizes": "72x72"
+    },
+    {
+      "src": "/wault-96.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "/wault-128.png",
+      "type": "image/png",
+      "sizes": "128x128"
+    },
+    {
+      "src": "/wault-144.png",
+      "type": "image/png",
+      "sizes": "144x144"
+    },
+    {
+      "src": "/wault-152.png",
+      "type": "image/png",
+      "sizes": "152x152"
+    },
+    {
+      "src": "/wault-180.png",
+      "type": "image/png",
+      "sizes": "180x180"
+    },
+    {
+      "src": "/wault-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/wault-256.png",
+      "type": "image/png",
+      "sizes": "256x256"
+    },
+    {
+      "src": "/wault-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}
