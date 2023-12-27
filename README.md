@@ -43,13 +43,9 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
----
-
 ## Contribute
 
 Feel free to contribute if you want to fix a bug, add a feature or make some improvements.
-
----
 
 ## License
 
