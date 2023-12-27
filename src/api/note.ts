@@ -92,6 +92,7 @@ export async function fetchRootNotes() {
     const notes = await sql<Note>`
       SELECT * FROM notes
       WHERE folder_id IS NULL AND user_id = ${userId}
+      ORDER BY notes.title ASC
     `;
     return notes.rows;
   } catch (error) {
@@ -117,6 +118,7 @@ export async function fetchNotesByFolderId(id: string) {
     const notes = await sql<Note>`
       SELECT * FROM notes
       WHERE folder_id = ${id} AND user_id = ${userId}
+      ORDER BY notes.title ASC
     `;
     return notes.rows;
   } catch (error) {

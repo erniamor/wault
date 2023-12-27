@@ -1,6 +1,5 @@
 - update readme
 - add not-found for folder and note page
-- add folder and note date
 - update page title dynamicaly
 - add toaster (find a way to do it dealing with useFormState https://github.com/vercel/next.js/issues/55860)
 - add mailer
@@ -10,6 +9,4 @@
 - add change user name
 - add change user email
 - add account deletion
-- add pwa
-- change folder and note list order
 - add animations between folders

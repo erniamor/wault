@@ -8,30 +8,6 @@ import { redirect } from 'next/navigation';
 import { unstable_noStore as noStore } from 'next/cache';
 import { auth } from "../auth"
 
-export async function fetchRootFolders() {
-  noStore();
-
-  const session = await auth()
-  if (!session) {
-    redirect("/auth/login")
-  }
-
-  const userId = session.user?.id;
-  if (!userId) {
-    throw new Error('Authentication Error: User not found.');
-  }
-
-  try {
-    const folders = await sql<Folder>`
-      SELECT * FROM folders
-      WHERE folder_id IS NULL AND user_id = ${userId}
-    `;
-    return folders.rows;
-  } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to fetch root folders.');
-  }
-}
 export async function fetchFolders() {
   noStore();
 
@@ -49,6 +25,32 @@ export async function fetchFolders() {
     const folders = await sql<Folder>`
       SELECT * FROM folders
       WHERE user_id = ${userId}
+      ORDER BY folders.title ASC
+    `;
+    return folders.rows;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch root folders.');
+  }
+}
+export async function fetchRootFolders() {
+  noStore();
+
+  const session = await auth()
+  if (!session) {
+    redirect("/auth/login")
+  }
+
+  const userId = session.user?.id;
+  if (!userId) {
+    throw new Error('Authentication Error: User not found.');
+  }
+
+  try {
+    const folders = await sql<Folder>`
+      SELECT * FROM folders
+      WHERE folder_id IS NULL AND user_id = ${userId}
+      ORDER BY folders.title ASC
     `;
     return folders.rows;
   } catch (error) {
@@ -97,6 +99,7 @@ export async function fetchFoldersByFolderId(id: string) {
     const folders = await sql<Folder>`
       SELECT * FROM folders
       WHERE folder_id = ${id} AND user_id = ${userId}
+      ORDER BY folders.title ASC
     `;
     return folders.rows;
   } catch (error) {
