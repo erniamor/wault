@@ -5,9 +5,12 @@ This is a [Next.js](https://nextjs.org/) project to save notes and links in your
 ## Features
 
 - User accounts
+- Tree folder structure
 - Private notes and links
-- Folder structure
+- Markdown for note content
+- Autofill link from OpenGraph meta tags
 - Search page
+- Available for PWA
 
 ## Getting Started
 
