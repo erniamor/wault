@@ -2,6 +2,10 @@
 
 This is a [Next.js](https://nextjs.org/) project to save notes and links in your personal online vault.
 
+Already deployed on [Vercel](https://vercel.com/) at [wault.erniamor.com](https://wault.erniamor.com/).
+
+Feel free to create an account for your own vault !
+
 ## Features
 
 - User accounts
