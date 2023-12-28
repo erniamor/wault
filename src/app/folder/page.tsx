@@ -11,7 +11,7 @@ import RootMenu from '@/components/folder/RootMenu';
 import List from '@/components/List';
 
 export const metadata: Metadata = {
-  title: 'Vault',
+  title: 'Root',
 };
 
 export default async function Page() {

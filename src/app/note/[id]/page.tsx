@@ -4,9 +4,13 @@ import { notFound } from 'next/navigation';
 import NoteContent from '@/components/note/NoteContent';
 import NoteUrl from '@/components/note/NoteLink';
 
-export const metadata: Metadata = {
-  title: 'Note',
-};
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+  const id = params.id;
+  const note = await fetchNoteById(id);
+  return {
+    title: `${note.title} | Note`,
+  }
+}
 
 export default async function Page({ params }: { params: { id: string } }) {
   const id = params.id;

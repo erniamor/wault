@@ -1,4 +1,4 @@
-import { fetchFoldersByFolderId } from '@/api/folder';
+import { fetchFolderById, fetchFoldersByFolderId } from '@/api/folder';
 import { fetchNotesByFolderId } from '@/api/note';
 import { Metadata } from 'next';
 import FolderCard from '@/components/folder/FolderCard';
@@ -7,9 +7,13 @@ import CreateMenu from '@/components/CreateMenu';
 import FolderEmpty from '@/components/folder/FolderEmpty';
 import List from '@/components/List';
 
-export const metadata: Metadata = {
-  title: 'Folder',
-};
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+  const id = params.id;
+  const folder = await fetchFolderById(id);
+  return {
+    title: `${folder.title} | Folder`,
+  }
+}
 
 export default async function Page({ params }: { params: { id: string } }) {
   const id = params.id;

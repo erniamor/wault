@@ -9,6 +9,7 @@ const APP_DESCRIPTION = "A vault for your notes, links and more!";
 const APP_URL = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000';
 
 export const metadata: Metadata = {
+  metadataBase: new URL(APP_URL),
   applicationName: APP_NAME,
   title: {
     default: APP_DEFAULT_TITLE,
@@ -34,12 +35,12 @@ export const metadata: Metadata = {
     url: APP_URL,
     images: [
       {
-        url: APP_URL + '/og.png',
+        url: '/og.png',
         width: 800,
         height: 600,
       },
       {
-        url: APP_URL + '/og-alt.png',
+        url: '/og-alt.png',
         width: 1800,
         height: 1600,
       },

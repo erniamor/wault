@@ -4,9 +4,13 @@ import { Metadata } from 'next';
 import UpdateFolderForm from '@/components/folder/UpdateFolderForm';
 import { convertFoldersForOptions } from '@/utils/convertFoldersForOptions';
 
-export const metadata: Metadata = {
-  title: 'Update a Folder',
-};
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+  const id = params.id;
+  const folder = await fetchFolderById(id);
+  return {
+    title: `Update ${folder.title} | Folder`,
+  }
+}
 
 export default async function Page({ params }: { params: { id: string } }) {
   const id = params.id;

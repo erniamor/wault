@@ -3,7 +3,7 @@ import Title from '@/components/Title';
 import CreateFolderForm from '@/components/folder/CreateFolderForm';
 import Main from '@/components/Main';
 export const metadata: Metadata = {
-  title: 'Create Folder',
+  title: 'Create a Folder',
 };
 
 export default async function Page() {

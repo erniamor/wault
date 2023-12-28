@@ -1,4 +1,3 @@
-- update page title dynamicaly
 - add mailer
 - add verify email
 - add forgot password

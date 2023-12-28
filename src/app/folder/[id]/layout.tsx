@@ -1,3 +1,4 @@
+import { Metadata } from 'next';
 import { fetchFolderById } from '@/api/folder';
 import { notFound } from 'next/navigation';
 import FolderMenu from '@/components/folder/FolderMenu';

@@ -5,9 +5,13 @@ import { Metadata } from 'next';
 import UpdateNoteForm from '@/components/note/UpdateNoteForm';
 import { convertFoldersForOptions } from '@/utils/convertFoldersForOptions';
 
-export const metadata: Metadata = {
-  title: 'Update a Note',
-};
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+  const id = params.id;
+  const note = await fetchNoteById(id);
+  return {
+    title: `Update ${note.title} | Note`,
+  }
+}
 
 export default async function Page({ params }: { params: { id: string } }) {
   const id = params.id;

@@ -3,9 +3,13 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import DeleteNoteForm from '@/components/note/DeleteNoteForm';
 
-export const metadata: Metadata = {
-  title: 'Delete a Note',
-};
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+  const id = params.id;
+  const note = await fetchNoteById(id);
+  return {
+    title: `Delete ${note.title} | Note`,
+  }
+}
 
 export default async function Page({ params }: { params: { id: string } }) {
   const id = params.id;
