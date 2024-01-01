@@ -1,4 +1,6 @@
 import Header from '@/components/Header';
+import Main from '@/components/Main';
+import ProfileMenu from '@/components/profile/ProfileMenu';
 export default function ProfileLayout({
   children,
 }: {
@@ -8,7 +10,12 @@ export default function ProfileLayout({
     <div className="w-full">
       <Header />
       <div>
-        {children}
+        <Main>
+          <div className="relative -mt-5">
+            <ProfileMenu />
+          </div>
+          {children}
+        </Main>
       </div>
     </div>
   )

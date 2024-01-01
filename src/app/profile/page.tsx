@@ -1,8 +1,7 @@
 import { Metadata } from 'next';
 import { auth } from "@/auth";
-import Title from '@/components/Title';
-import Main from '@/components/Main';
 import Button from '@/components/Button';
+import Title from '@/components/Title';
 import { logout } from '@/api/user';
 
 export const metadata: Metadata = {
@@ -11,12 +10,11 @@ export const metadata: Metadata = {
 
 export default async function Page() {
   const session = await auth()
-  return <Main>
-    <div className="mb-5">
+  return <>
+    <div className="pt-12 mb-5">
       <Title>Profile</Title>
     </div>
     <div className="rounded-md bg-gray-50 text-black p-4">
-
       {session
         ? <div>
           <div>
@@ -33,5 +31,5 @@ export default async function Page() {
         <Button type="submit">Sign out</Button>
       </form>
     </div>
-  </Main>
+  </>
 }

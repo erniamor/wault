@@ -1,11 +1,14 @@
 'use server';
 
+import type { Folder } from '@/types/folder';
+import type { Note } from '@/types/note';
 import { signIn, signOut } from '@/auth';
 import { AuthError } from 'next-auth';
 import { sql } from '@vercel/postgres';
 import { z } from 'zod';
 import { redirect } from 'next/navigation';
 import bcrypt from 'bcrypt';
+import { auth } from "../auth"
 
 export type RegisterState = {
   errors?: {
@@ -107,4 +110,34 @@ export async function authenticate(prevState: string | undefined, formData: Form
 
 export async function logout() {
   await signOut();
+}
+
+export async function exportUserData() {
+
+  const session = await auth()
+  if (!session) {
+    redirect("/auth/login")
+  }
+
+  const userId = session.user?.id;
+  if (!userId) {
+    throw new Error('Authentication Error: User not found.');
+  }
+
+  const foldersResult = await sql<Folder>`
+      SELECT * FROM folders
+      WHERE user_id = ${userId}
+      ORDER BY folders.title ASC
+    `;
+  const folders = foldersResult.rows;
+
+  const notesResult = await sql<Note>`
+      SELECT * FROM notes
+      WHERE user_id = ${userId}
+      ORDER BY notes.title ASC
+    `;
+  const notes = notesResult.rows;
+
+  return JSON.stringify({ folders, notes });
+
 }
