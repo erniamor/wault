@@ -289,3 +289,18 @@ async function deleteFolderRecursively(folder: Folder, userId: string) {
   await sql`DELETE FROM folders WHERE id = ${folder.id} AND user_id = ${userId}`;
 
 }
+
+
+export async function importFolders(userId: string, folders: Folder[]) {
+
+  /* for (const folder of folders) {
+    // insert folder if not exists
+    await sql`
+      INSERT INTO folders (title, description, user_id, folder_id)
+      VALUES (${folder.title}, ${folder.description}, ${userId}, ${folder.folder_id})
+    `;
+    
+  } */
+
+}
+

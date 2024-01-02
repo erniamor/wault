@@ -1,15 +1,15 @@
 'use client';
-import { exportUserData } from '@/api/user';
+import { downloadUserData } from '@/api/user';
 import FileSaver from 'file-saver';
 import { useState } from 'react';
 import Button from '@/components/Button';
-export default function ExportForm() {
+export default function DownloadForm() {
 
   const [loading, setLoading] = useState(false);
 
   async function downloadData() {
     setLoading(true);
-    const data = await exportUserData();
+    const data = await downloadUserData();
     const blob = new Blob([data], { type: 'application/json' });
     FileSaver.saveAs(blob, "wault.json");
     setLoading(false);

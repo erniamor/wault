@@ -13,7 +13,7 @@ export default function FolderTreeBranch({ folder, level }: { folder: FolderWith
       <div>{folder.title}</div>
     </Link>
 
-    {folder.children && folder.children.map((child) => (
+    {folder.folders && folder.folders.map((child) => (
       <FolderTreeBranch key={child.id} folder={child} level={level + 1} />
     ))}
   </>

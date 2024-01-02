@@ -11,11 +11,11 @@ export default function NoteMenu() {
       </MenuLink>
     </div>
     <div className='flex flex-row items-start gap-2'>
-      <MenuLink href={`/profile/import`} activeColor='bg-green-600'>
-        <CiImport />
-      </MenuLink>
-      <MenuLink href={`/profile/export`} activeColor='bg-sky-600'>
+      <MenuLink href={`/profile/upload`} activeColor='bg-green-600'>
         <CiExport />
+      </MenuLink>
+      <MenuLink href={`/profile/download`} activeColor='bg-sky-600'>
+        <CiImport />
       </MenuLink>
       <MenuLink href={`/profile/delete`} activeColor='bg-red-600'>
         <CiTrash />

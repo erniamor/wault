@@ -8,6 +8,7 @@ export type InputProps = {
   placeholder?: string
   disabled?: boolean
   errors?: string[]
+  [key: string]: any
 }
 export default function Input({
   name,
@@ -16,7 +17,8 @@ export default function Input({
   label,
   placeholder,
   disabled,
-  errors
+  errors,
+  ...props
 }: InputProps) {
   const id = useId()
   return <Field id={id} label={label} errors={errors}>
@@ -29,6 +31,7 @@ export default function Input({
       disabled={disabled}
       aria-describedby={`${id}-error`}
       className="peer block w-full rounded-md border border-gray-200 py-2 pl-2 text-sm text-gray-900 outline-2 placeholder:text-gray-500 disabled:cursor-not-allowed disabled:opacity-50"
+      {...props}
     />
   </Field>
 }

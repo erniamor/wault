@@ -1,4 +1,4 @@
-
+import type { Note } from './note';
 export type Folder = {
   id: string;
   title: string;
@@ -8,5 +8,6 @@ export type Folder = {
 }
 
 export interface FolderWithChildren extends Folder {
-  children: FolderWithChildren[];
+  folders?: FolderWithChildren[];
+  notes?: Note[];
 }
