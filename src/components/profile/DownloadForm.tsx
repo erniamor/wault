@@ -3,6 +3,7 @@ import { downloadUserData } from '@/api/user';
 import FileSaver from 'file-saver';
 import { useServerAction } from '@/hooks/useServerAction';
 import Button from '@/components/Button';
+import FormButtons from '../form/FormButtons';
 export default function DownloadForm() {
 
   const [runAction, loading] = useServerAction(downloadUserData);
@@ -15,13 +16,14 @@ export default function DownloadForm() {
   };
 
   return <>
-    <div className="rounded-md bg-gray-50 text-black p-4">
+    <div className="rounded-md bg-gray-50 text-black p-4 text-center">
       You can download your data here.
     </div>
-    <div className="mt-6 flex justify-center gap-3">
-      <form action={onSubmit}>
+    <form action={onSubmit}>
+      <FormButtons>
+        <Button href={`/profile`} disabled={loading}>Cancel</Button>
         <Button type="submit" styling='primary' loading={loading}>Download</Button>
-      </form>
-    </div>
+      </FormButtons>
+    </form>
   </>
 }

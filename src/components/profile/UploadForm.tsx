@@ -13,7 +13,7 @@ import { FaCheckCircle } from "react-icons/fa";
 
 export default function UploadForm() {
   const [result, setResult] = useState<UploadUserDataState | null>(null);
-  const [runAction, isRunning] = useServerAction(uploadUserData);
+  const [runAction, loading] = useServerAction(uploadUserData);
   const onSubmit = async (formData: FormData) => {
     const result = await runAction(formData);
     if (result) setResult(result);
@@ -21,7 +21,7 @@ export default function UploadForm() {
   return (
     result?.success
       ? <UploadSuccess result={result} />
-      : <Form handleSubmit={onSubmit} loading={isRunning} result={result} />
+      : <Form handleSubmit={onSubmit} loading={loading} result={result} />
 
   );
 }
@@ -29,11 +29,12 @@ export default function UploadForm() {
 function Form({ handleSubmit, loading, result }: { handleSubmit: (formData: FormData) => void, loading: boolean, result: UploadUserDataState | null }) {
   return <form action={handleSubmit}>
     <FormFields>
+      <p className="text-black text-center">Please select a JSON file to upload.</p>
       <Input name="file" label="File" type="file" accept="application/json" errors={result?.errors?.file} />
     </FormFields>
     <FormButtons>
       <Button href={`/profile`} disabled={loading}>Cancel</Button>
-      <Button type="submit" styling='primary' loading={loading}>Upload Data</Button>
+      <Button type="submit" styling='primary' loading={loading}>Upload</Button>
     </FormButtons>
     {result?.message && <FormError message={result?.message} />}
   </form>
