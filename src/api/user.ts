@@ -12,6 +12,7 @@ import bcrypt from 'bcrypt';
 import { auth } from "../auth"
 import { addNotesToFolders } from '@/utils/addNotesToFolders';
 import { convertFoldersToTree } from '@/utils/convertFoldersToTree';
+import dayjs from 'dayjs';
 
 export type RegisterState = {
   errors?: {
@@ -144,7 +145,11 @@ export async function downloadUserData() {
   const foldersWithNotes = addNotesToFolders(notes, folders);
   const tree = convertFoldersToTree(foldersWithNotes)
 
-  return JSON.stringify({ data: tree });
+  return JSON.stringify({
+    data: tree,
+    date: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+    version: '1.0.0',
+  });
 
 }
 

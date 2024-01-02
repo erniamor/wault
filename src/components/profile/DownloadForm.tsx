@@ -4,6 +4,7 @@ import FileSaver from 'file-saver';
 import { useServerAction } from '@/hooks/useServerAction';
 import Button from '@/components/Button';
 import FormButtons from '../form/FormButtons';
+import dayjs from 'dayjs';
 export default function DownloadForm() {
 
   const [runAction, loading] = useServerAction(downloadUserData);
@@ -11,7 +12,8 @@ export default function DownloadForm() {
     const data = await runAction(formData);
     if (data) {
       const blob = new Blob([data], { type: 'application/json' });
-      FileSaver.saveAs(blob, "wault.json");
+      const filenameWithDate = `wault-${dayjs().format('YYYY-MM-DD_HH:mm:ss')}.json`;
+      FileSaver.saveAs(blob, filenameWithDate);
     }
   };
 
