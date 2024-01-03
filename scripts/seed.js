@@ -16,7 +16,18 @@ async function seedUsers(client) {
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
         email TEXT NOT NULL UNIQUE,
-        password TEXT NOT NULL
+        password TEXT NOT NULL,
+        isVerified boolean,
+        verifyToken varchar(255),
+        verifyExpires timestamp,
+        resetPasswordToken varchar(255),
+        resetPasswordExpires timestamp,
+        changePasswordToken varchar(255),
+        changePasswordExpires timestamp,
+        changeEmailToken varchar(255),
+        changeEmailExpires timestamp,
+        deleteAccountToken varchar(255),
+        deleteAccountExpires timestamp
       );
     `;
 
