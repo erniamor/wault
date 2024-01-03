@@ -1,7 +1,7 @@
 'use client';
 
 import { useFormState } from 'react-dom';
-import { authenticate } from '@/api/user';
+import { login } from '@/api/auth';
 import FormFields from '../form/FormFields';
 import FormButtons from '../form/FormButtons';
 import FormCancelButton from '../form/FormCancelButton';
@@ -10,7 +10,7 @@ import FormError from '../form/FormError';
 import Input from '../fields/Input';
 
 export default function LoginForm() {
-  const [errorMessage, dispatch] = useFormState(authenticate, undefined);
+  const [errorMessage, dispatch] = useFormState(login, undefined);
 
   return (
     <form action={dispatch}>

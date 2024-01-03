@@ -1,6 +1,6 @@
 'use client';
 
-import { RegisterState, register } from '@/api/user';
+import { RegisterState, register } from '@/api/auth';
 import { useFormState } from 'react-dom';
 import Input from '../fields/Input';
 import FormError from '../form/FormError';

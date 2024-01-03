@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { auth } from "@/auth";
 import Button from '@/components/Button';
 import Title from '@/components/Title';
-import { logout } from '@/api/user';
+import { logout } from '@/api/auth';
 
 export const metadata: Metadata = {
   title: 'Profile',
