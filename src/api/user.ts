@@ -128,15 +128,16 @@ export async function downloadUserData() {
     throw new Error('Authentication Error: User not found.');
   }
 
+  // TODO: remove user_id field
   const foldersResult = await sql<Folder>`
-      SELECT * FROM folders
+      SELECT id, title, description, folder_id FROM folders
       WHERE user_id = ${userId}
       ORDER BY folders.title ASC
     `;
   const folders = foldersResult.rows;
 
   const notesResult = await sql<Note>`
-      SELECT * FROM notes
+      SELECT id, title, description, content, url, folder_id FROM notes
       WHERE user_id = ${userId}
       ORDER BY notes.title ASC
     `;
@@ -164,6 +165,62 @@ export type UploadUserDataState = {
   createdNotes?: number;
   updatedNotes?: number;
 };
+
+
+
+
+const baseFolderSchema = z.object({
+  id: z.string().refine((val: string) => val !== ''),
+  title: z.string()
+    .trim()
+    .max(255)
+    .refine((val: string) => val !== ''),
+  description: z.union([
+    z.string().max(255),
+    z.null()
+  ]),
+  folder_id: z.union([
+    z.string().refine((val: string) => val !== ''),
+    z.null()
+  ]),
+});
+const baseNoteSchema = z.object({
+  id: z.string().refine((val: string) => val !== ''),
+  title: z.string()
+    .trim()
+    .max(255)
+    .refine((val: string) => val !== ''),
+  description: z.union([
+    z.string().max(255),
+    z.null()
+  ]),
+  content: z.union([z.string(), z.null()]),
+  url: z.union([
+    z.string().url().max(2000),
+    z.string().refine((val: string) => val === ''),
+    z.null()
+  ]),
+  folder_id: z.union([
+    z.string().refine((val: string) => val !== ''),
+    z.null()
+  ]),
+});
+
+type UploadFolderWithChildren = z.infer<typeof baseFolderSchema> & {
+  folders: UploadFolderWithChildren[];
+  notes: z.infer<typeof baseNoteSchema>[];
+};
+
+const uploadFolderWithChildrenSchema: z.ZodType<UploadFolderWithChildren> = baseFolderSchema.extend({
+  folders: z.lazy(() => uploadFolderWithChildrenSchema.array()),
+  notes: z.lazy(() => baseNoteSchema.array()),
+});
+
+const uploadUserDataSchema = z.object({
+  data: z.array(uploadFolderWithChildrenSchema),
+  date: z.string(),
+  version: z.string(),
+})
 
 export async function uploadUserData(formData: FormData): Promise<UploadUserDataState> {
 
@@ -195,9 +252,24 @@ export async function uploadUserData(formData: FormData): Promise<UploadUserData
 
   const data = JSON.parse(buffer.toString());
 
+  // Validate json using Zod
+  const validatedData = uploadUserDataSchema.safeParse(data);
+
+  // If form validation fails, return errors early. Otherwise, continue.
+  if (!validatedData.success) {
+    console.log(validatedData.error);
+    return {
+      errors: {
+        file: ['Invalid JSON schema.'],
+      },
+      message: 'Failed to parse data.',
+    };
+  }
+
   const uploadResult = await uploadFoldersAndNotes(userId, data.data);
 
   revalidatePath(`/folder`);
+  revalidatePath(`/tree`);
 
   return {
     success: true,
