@@ -86,7 +86,7 @@ export async function register(prevState: RegisterState, formData: FormData) {
     `;
 
     if (sqlResult.rowCount === 1) {
-      sendVerifyEmail(email, verifyToken);
+      sendVerifyEmail(name, email, verifyToken);
     }
   } catch (error) {
     console.error('Failed to insert user:', error);
