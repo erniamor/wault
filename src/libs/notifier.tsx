@@ -1,6 +1,6 @@
 import { sendEmail } from '@/libs/mailer';
 import { render } from '@react-email/render';
-import { VerifyEmail } from '../../emails/emails/verify-email';
+import { VerifyEmail } from '../emails/verify-email';
 
 const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000';
 const supportLink = `${baseUrl}/support`;
