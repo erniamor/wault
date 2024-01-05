@@ -1,9 +1,15 @@
+'use server';
+
 import { signIn, signOut } from '@/auth';
 import { AuthError } from 'next-auth';
 import bcrypt from 'bcrypt';
 import { sql } from '@vercel/postgres';
 import { z } from 'zod';
 import { redirect } from 'next/navigation';
+import { sendVerifyEmail } from '@/libs/notifier';
+
+const VERIFY_EXPIRES_DELAY = process.env.AUTH_VERIFY_EXPIRES_DELAY ? parseInt(process.env.AUTH_VERIFY_EXPIRES_DELAY, 10) : 24 * 60 * 60;
+const VERIFY_MAX_ATTEMPTS = process.env.AUTH_VERIFY_MAX_ATTEMPTS ? parseInt(process.env.AUTH_VERIFY_MAX_ATTEMPTS, 10) : 5;
 
 export type RegisterState = {
   errors?: {
@@ -69,14 +75,21 @@ export async function register(prevState: RegisterState, formData: FormData) {
   // Prepare data for insertion into the database
   const { name, email, password } = validatedFields.data;
   const hashedPassword = await bcrypt.hash(password, 10);
-  // const date = new Date().toISOString().split('T')[0];
+  const verifyToken = crypto.randomUUID();
+  const verifyExpires = Date.now() + VERIFY_EXPIRES_DELAY;
+  const verifyAttempts = 0;
 
   try {
     const sqlResult = await sql`
-      INSERT INTO users (name, email, password)
-      VALUES (${name}, ${email}, ${hashedPassword});
+      INSERT INTO users (name, email, password, isVerified, verifyToken, verifyExpires, verifyAttempts)
+      VALUES (${name}, ${email}, ${hashedPassword}, false, ${verifyToken}, ${verifyExpires}, ${verifyAttempts});
     `;
+
+    if (sqlResult.rowCount === 1) {
+      sendVerifyEmail(email, verifyToken);
+    }
   } catch (error) {
+    console.error('Failed to insert user:', error);
     return {
       message: 'Database Error: Failed to Register.',
     };

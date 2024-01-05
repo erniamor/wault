@@ -19,15 +19,20 @@ async function seedUsers(client) {
         password TEXT NOT NULL,
         isVerified boolean,
         verifyToken varchar(255),
-        verifyExpires timestamp,
+        verifyExpires bigint,
+        verifyAttempts int,
         resetPasswordToken varchar(255),
-        resetPasswordExpires timestamp,
+        resetPasswordExpires bigint,
+        resetPasswordAttempts int,
         changePasswordToken varchar(255),
-        changePasswordExpires timestamp,
+        changePasswordExpires bigint,
+        changePasswordAttempts int,
         changeEmailToken varchar(255),
-        changeEmailExpires timestamp,
+        changeEmailExpires bigint,
+        changeEmailAttempts int,
         deleteAccountToken varchar(255),
-        deleteAccountExpires timestamp
+        deleteAccountExpires bigint,
+        deleteAccountAttempts int
       );
     `;
 
