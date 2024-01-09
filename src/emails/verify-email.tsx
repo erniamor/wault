@@ -36,12 +36,9 @@ export const VerifyEmail = ({
       <Container style={container}>
 
         <Section style={logo}>
-          <Img
-            src={`${baseUrl}/wault-logo-black.png`}
-            width="60"
-            height="60"
-            alt="Wault"
-          />
+          <Text style={title}>
+            Wault
+          </Text>
         </Section>
 
         <Section style={section}>
